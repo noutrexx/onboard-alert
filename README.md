@@ -1,11 +1,8 @@
 # Onboard Alert
 
 <p align="center">
-
-</p>
-
-<p align="center">
-  <strong>Live News & Crisis Map with Admin Triage, Bot Ingestion, and Copyright-Safe Source Embeds</strong>
+  <strong>Live News & Crisis Map Platform</strong><br />
+  Interactive map UI, editorial admin dashboard, bot ingestion, and triage workflow.
 </p>
 
 <p align="center">
@@ -17,64 +14,59 @@
   <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-Ready-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" />
 </p>
 
+<p align="center">
+  <img src="docs/screenshots/map.png" alt="Onboard Alert full-screen map" width="100%" />
+</p>
+
 ## Overview
 
-Onboard Alert is a full-stack live news and crisis mapping platform. It displays location-based breaking news on an interactive map, gives editors a professional admin dashboard, and supports hybrid data ingestion from both manual admin entries and automated bots or scrapers.
+Onboard Alert is a full-stack, map-first news operations platform. It visualizes location-based alerts on a live dark-mode map, gives editors a professional dashboard for manual publishing, and prepares the system for automated bot/scraper ingestion.
 
-The project is designed for modern news workflows:
+The architecture is built around a hybrid editorial workflow: trusted admin entries can go live immediately, while bot-generated items with missing or uncertain location data are routed into a triage queue. Editors can then review the item, assign a location from an interactive map, and publish or reject it.
 
-- Public users see a clean, map-first experience.
-- Editors can add, edit, reject, or publish stories from an admin panel.
-- Bots can ingest alerts through a protected webhook.
-- Alerts with missing coordinates are held in a triage queue instead of being placed incorrectly on the map.
-- Full article content and media are not copied into the database. The app stores a short snippet and renders original Twitter/X posts via embed or links users to the source.
+To stay copyright-safe, the project stores only short snippets and source links. Full media and article content remain with the original publisher. Twitter/X links can be embedded directly, while other links are presented as polished source cards.
 
-## Features
+## Highlights
 
-- Full-screen dark Leaflet map focused on Turkey.
-- Glassmorphism collapsible left news sidebar.
-- Smooth Framer Motion panel transitions.
-- Custom hidden scrollbar for a cleaner map experience.
-- Keyboard shortcuts: `M` toggles the feed, `Esc` closes it.
-- Unread ping badge when new items arrive while the feed is closed.
-- Alert markers with pulse animation and severity color indicators.
-- Copyright-safe source rendering:
-  - Twitter/X URLs render as embedded posts.
-  - Other links render as compact "Original News" source cards.
-- Admin dashboard with:
-  - News table
-  - Create/edit forms
-  - Mini Leaflet location picker
-  - LocalStorage mock API layer for frontend development
-- Bot triage workflow:
-  - Missing coordinates become `pending_location`
-  - Admin reviews pending alerts
-  - Admin assigns location on a mini map
-  - Admin publishes or rejects the record
-- Node.js TypeScript backend scaffold with:
-  - Express REST API
-  - Zod validation
-  - JWT admin middleware
-  - API key protected bot webhook
-  - PostgreSQL migrations
-  - Mock geocoding service
+- Full-screen Leaflet map focused on Turkey
+- Pulse animated alert markers with severity indicators
+- Collapsible glassmorphism news feed pinned to the left side
+- Smooth Framer Motion sidebar transitions
+- Hidden custom scrollbar for a cleaner map experience
+- Keyboard shortcuts: `M` toggles the feed, `Esc` closes it
+- Unread ping badge when new items arrive while the feed is closed
+- Copyright-safe source rendering with `react-tweet`
+- Admin dashboard for managing news records
+- Mini-map location picker for manual entries
+- Bot triage queue for alerts waiting for location approval
+- Node.js TypeScript backend with PostgreSQL migrations
+- Zod validation, JWT admin guard, and API-key-protected bot webhook
 
 ## Screenshots
 
-> Create your own screenshots and save them in `docs/screenshots/` using these file names:
-> `map.png`, `sidebar.png`, and `admin.png`.
-
-### Main Map
-
-![Main Map](docs/screenshots/map.png)
-
-### News Sidebar
+### News Feed Sidebar
 
 ![News Sidebar](docs/screenshots/sidebar.png)
 
 ### Admin Dashboard
 
 ![Admin Dashboard](docs/screenshots/admin.png)
+
+## Product Flow
+
+```txt
+Bot / Admin input
+      |
+      v
+Unified alert schema
+      |
+      +-- Published with coordinates ------> Public live map
+      |
+      +-- Missing location ----------------> Admin triage queue
+                                               |
+                                               v
+                                      Assign location & publish
+```
 
 ## Tech Stack
 
@@ -135,56 +127,47 @@ onboard-alert/
     screenshots/
 ```
 
-## Installation & Usage
+## Installation
 
-### 1. Clone the repository
+### Clone
 
 ```bash
 git clone https://github.com/noutrexx/onboard_alert.git
 cd onboard_alert
 ```
 
-### 2. Install frontend dependencies
+### Frontend
 
 ```bash
 npm install
-```
-
-### 3. Run the frontend
-
-```bash
 npm run dev
 ```
 
-The frontend runs at:
+Frontend routes:
 
 ```txt
-http://127.0.0.1:5173
+http://127.0.0.1:5173/        Public live map
+http://127.0.0.1:5173/admin   Admin dashboard
 ```
 
-Routes:
-
-```txt
-/        Public live map
-/admin   Admin dashboard
-```
-
-### 4. Install backend dependencies
+### Backend
 
 ```bash
 cd backend
 npm install
-```
-
-### 5. Configure backend environment
-
-Create a `.env` file from the example:
-
-```bash
 cp .env.example .env
+npm run dev
 ```
 
-Required backend variables:
+Backend runs at:
+
+```txt
+http://localhost:4000
+```
+
+## Environment
+
+Create `backend/.env`:
 
 ```env
 NODE_ENV=development
@@ -196,27 +179,16 @@ BOT_AUTO_PUBLISH_CONFIDENCE=0.82
 CORS_ORIGIN=http://127.0.0.1:5173
 ```
 
-### 6. Run PostgreSQL migrations
+## Database Migrations
 
 ```bash
+cd backend
 psql "$DATABASE_URL" -f database/migrations/001_create_alerts.sql
 psql "$DATABASE_URL" -f database/migrations/002_source_url_snippet_model.sql
 psql "$DATABASE_URL" -f database/migrations/003_pending_location_triage.sql
 ```
 
-### 7. Run the backend
-
-```bash
-npm run dev
-```
-
-The backend runs at:
-
-```txt
-http://localhost:4000
-```
-
-## API Overview
+## API
 
 ```txt
 GET    /api/alerts
@@ -227,36 +199,34 @@ DELETE /api/admin/alerts/:id
 POST   /api/webhooks/bot-ingest
 ```
 
-## Bot Ingestion Workflow
+## Bot Triage Workflow
 
-Bots send alerts to:
+Bots submit alerts through:
 
 ```txt
 POST /api/webhooks/bot-ingest
 ```
 
-If coordinates are present, the alert can be published or sent to review depending on confidence. If coordinates are missing or cannot be geocoded, the backend stores the alert as:
+If coordinates are available, the alert can be published depending on confidence. If coordinates are missing or geocoding fails, the record is saved as:
 
 ```txt
 status = pending_location
 ```
 
-Editors then open the admin triage queue, assign the correct map location, and publish the alert.
+Editors then review the pending alert, choose the correct location on a mini map, and publish it.
 
 ## Copyright-Safe Content Model
 
-Onboard Alert intentionally avoids storing full article text, copied images, or videos.
+Onboard Alert avoids storing copied article text, images, or videos. The system stores:
 
-The database stores:
+- Short editorial snippet
+- Location and category metadata
+- Severity/status information
+- Original `source_url`
 
-- A short editorial snippet
-- Location data
-- Severity/category metadata
-- The original `source_url`
+The public UI either embeds the original Twitter/X post or links the user back to the original publisher.
 
-The frontend either embeds the original Twitter/X post or redirects users to the original publisher.
-
-## Development Checks
+## Quality Checks
 
 Frontend:
 
@@ -272,16 +242,12 @@ cd backend
 npm run build
 ```
 
-## Screenshots Note
-
-The `docs/screenshots/` folder is included for portfolio assets. Add:
+## Repository
 
 ```txt
-docs/screenshots/map.png
-docs/screenshots/sidebar.png
-docs/screenshots/admin.png
+https://github.com/noutrexx/onboard_alert.git
 ```
 
 ## License
 
-This project is intended for portfolio and product-prototype use. Add your preferred license before public production use.
+Portfolio prototype. Add a production license before commercial deployment.
