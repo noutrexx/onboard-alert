@@ -1,7 +1,7 @@
 # Onboard Alert
 
 <p align="center">
-  <img src="docs/screenshots/banner-placeholder.png" alt="Onboard Alert banner placeholder" width="100%" />
+
 </p>
 
 <p align="center">
