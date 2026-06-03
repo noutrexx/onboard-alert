@@ -1,6 +1,24 @@
 import { alerts as seedAlerts } from '../data/alerts'
 
 const STORAGE_KEY = 'onboard-alert:alerts'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? ''
+const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN ?? ''
+const USE_BACKEND = Boolean(API_BASE_URL)
+
+const frontendToBackendSeverity = {
+  critical: 'red',
+  high: 'yellow',
+  medium: 'green',
+  red: 'red',
+  yellow: 'yellow',
+  green: 'green',
+}
+
+const backendToFrontendSeverity = {
+  red: 'critical',
+  yellow: 'high',
+  green: 'medium',
+}
 
 function readAlerts() {
   const storedAlerts = window.localStorage.getItem(STORAGE_KEY)
@@ -39,15 +57,101 @@ function normalizeAlert(payload) {
   }
 }
 
+async function request(path, options = {}) {
+  if (options.admin && !ADMIN_TOKEN) {
+    throw new Error('missing_admin_token')
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(options.admin ? { Authorization: `Bearer ${ADMIN_TOKEN}` } : {}),
+    ...(options.headers ?? {}),
+  }
+
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers,
+  })
+
+  if (!response.ok) {
+    const detail = await response.json().catch(() => ({}))
+    throw new Error(detail.error || `api_request_failed_${response.status}`)
+  }
+
+  if (response.status === 204) return null
+
+  const body = await response.json()
+  return body.data ?? body
+}
+
+function fromBackendAlert(alert) {
+  return normalizeAlert({
+    ...alert,
+    category: alert.metadata?.category ?? 'regional',
+    location: alert.locationText ?? '',
+    severity: backendToFrontendSeverity[alert.severity] ?? alert.severity,
+    sourceUrl: alert.sourceUrl ?? '',
+    tags: alert.metadata?.tags ?? [],
+    timestamp: alert.createdAt,
+    updatedAt: alert.updatedAt,
+  })
+}
+
+function toBackendAlert(payload) {
+  const normalized = normalizeAlert(payload)
+
+  if (!Number.isFinite(normalized.lat) || !Number.isFinite(normalized.lng)) {
+    throw new Error('invalid_coordinates')
+  }
+
+  return {
+    description: normalized.description,
+    lat: normalized.lat,
+    lng: normalized.lng,
+    locationText: normalized.location,
+    metadata: {
+      category: normalized.category,
+      tags: normalized.tags,
+    },
+    severity: frontendToBackendSeverity[normalized.severity] ?? 'green',
+    sourceUrl: normalized.sourceUrl || undefined,
+    title: normalized.title,
+  }
+}
+
 export async function getAlerts() {
+  if (USE_BACKEND && ADMIN_TOKEN) {
+    const data = await request('/api/admin/alerts', { admin: true })
+    return data.map(fromBackendAlert)
+  }
+
+  if (USE_BACKEND) {
+    const data = await request('/api/alerts?limit=500')
+    return data.map(fromBackendAlert)
+  }
+
   return readAlerts()
 }
 
 export async function getPendingAlerts() {
+  if (USE_BACKEND && ADMIN_TOKEN) {
+    const data = await request('/api/admin/alerts/pending', { admin: true })
+    return data.map(fromBackendAlert)
+  }
+
   return readAlerts().filter((alert) => alert.status === 'pending_location')
 }
 
 export async function addAlert(payload) {
+  if (USE_BACKEND) {
+    const data = await request('/api/admin/alerts', {
+      admin: true,
+      body: JSON.stringify(toBackendAlert(payload)),
+      method: 'POST',
+    })
+    return fromBackendAlert(data)
+  }
+
   const alerts = readAlerts()
   const newAlert = normalizeAlert({
     ...payload,
@@ -61,6 +165,15 @@ export async function addAlert(payload) {
 }
 
 export async function updateAlert(id, payload) {
+  if (USE_BACKEND) {
+    const data = await request(`/api/admin/alerts/${id}`, {
+      admin: true,
+      body: JSON.stringify(toBackendAlert(payload)),
+      method: 'PATCH',
+    })
+    return fromBackendAlert(data)
+  }
+
   const alerts = readAlerts()
   const updatedAlert = normalizeAlert({ ...payload, id })
   const nextAlerts = alerts.map((alert) => (alert.id === id ? updatedAlert : alert))
@@ -70,9 +183,26 @@ export async function updateAlert(id, payload) {
 }
 
 export async function publishAlertLocation(id, payload) {
+  if (USE_BACKEND) {
+    const data = await request(`/api/admin/alerts/${id}/publish-location`, {
+      admin: true,
+      body: JSON.stringify({
+        lat: Number(payload.lat),
+        lng: Number(payload.lng),
+        locationText: payload.location ?? payload.locationText,
+      }),
+      method: 'PATCH',
+    })
+    return fromBackendAlert(data)
+  }
+
   const alerts = readAlerts()
+  const existingAlert = alerts.find((alert) => alert.id === id)
+
+  if (!existingAlert) throw new Error('alert_not_found')
+
   const nextAlert = normalizeAlert({
-    ...alerts.find((alert) => alert.id === id),
+    ...existingAlert,
     ...payload,
     active: true,
     status: 'published',
@@ -85,6 +215,14 @@ export async function publishAlertLocation(id, payload) {
 }
 
 export async function deleteAlert(id) {
+  if (USE_BACKEND) {
+    await request(`/api/admin/alerts/${id}`, {
+      admin: true,
+      method: 'DELETE',
+    })
+    return { id }
+  }
+
   const alerts = readAlerts()
   const nextAlerts = alerts.filter((alert) => alert.id !== id)
 
@@ -93,6 +231,10 @@ export async function deleteAlert(id) {
 }
 
 export async function resetAlerts() {
+  if (USE_BACKEND) {
+    throw new Error('reset_disabled_for_backend_mode')
+  }
+
   writeAlerts(seedAlerts)
   return seedAlerts
 }

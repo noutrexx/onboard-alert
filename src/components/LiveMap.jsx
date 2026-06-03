@@ -1,9 +1,13 @@
 import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import AlertMarker from './AlertMarker'
 import MapFocusController from './MapFocusController'
 import { turkeyBounds, turkeyCenter } from '../data/alerts'
+import { getMapMode } from '../data/mapModes'
 
-function LiveMap({ alerts, selectedAlert, onSelectAlert }) {
+function LiveMap({ alerts, mapModeId, selectedAlert, onSelectAlert }) {
+  const mapMode = getMapMode(mapModeId)
+
   return (
     <MapContainer
       center={turkeyCenter}
@@ -16,19 +20,22 @@ function LiveMap({ alerts, selectedAlert, onSelectAlert }) {
       className="h-full w-full bg-slate-950"
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        attribution={mapMode.attribution}
+        key={mapMode.id}
+        url={mapMode.url}
       />
       <ZoomControl position="bottomright" />
       <MapFocusController selectedAlert={selectedAlert} />
-      {alerts.map((alert) => (
-        <AlertMarker
-          alert={alert}
-          isSelected={selectedAlert?.id === alert.id}
-          key={alert.id}
-          onSelect={onSelectAlert}
-        />
-      ))}
+      <MarkerClusterGroup chunkedLoading maxClusterRadius={44} showCoverageOnHover={false}>
+        {alerts.map((alert) => (
+          <AlertMarker
+            alert={alert}
+            isSelected={selectedAlert?.id === alert.id}
+            key={alert.id}
+            onSelect={onSelectAlert}
+          />
+        ))}
+      </MarkerClusterGroup>
     </MapContainer>
   )
 }

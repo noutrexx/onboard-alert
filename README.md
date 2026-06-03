@@ -207,6 +207,11 @@ Bots submit alerts through:
 POST /api/webhooks/bot-ingest
 ```
 
+`onboard-feeder` can push normalized RSS/X feed items into this endpoint with
+`x-api-key`, `x-timestamp`, and `x-signature` headers. The backend deduplicates
+bot records by `sourceUrl`, then routes them into `published`, `pending_review`,
+or `pending_location` depending on confidence and location availability.
+
 If coordinates are available, the alert can be published depending on confidence. If coordinates are missing or geocoding fails, the record is saved as:
 
 ```txt

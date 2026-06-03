@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const severitySchema = z.enum(['red', 'yellow', 'green'])
 export const botSourceSchema = z.enum(['twitter_bot', 'afad_scraper', 'rss_feed'])
+export const reviewStatusSchema = z.enum(['published', 'pending_location', 'draft'])
 
 const coordinateFields = {
   lat: z.number().min(-90).max(90),
@@ -21,6 +22,15 @@ export const adminCreateAlertSchema = z.object({
   }),
 })
 
+export const adminUpdateAlertSchema = z.object({
+  body: adminCreateAlertSchema.shape.body.partial().extend({
+    status: z.enum(['published', 'draft', 'pending_review', 'pending_location']).optional(),
+  }),
+  params: z.object({
+    id: z.uuid(),
+  }),
+})
+
 export const botIngestSchema = z.object({
   body: z.object({
     confidence: z.number().min(0).max(1).optional(),
@@ -31,7 +41,7 @@ export const botIngestSchema = z.object({
     metadata: z.record(z.string(), z.unknown()).optional(),
     severity: severitySchema,
     source: botSourceSchema,
-    sourceUrl: z.string().url().optional(),
+    sourceUrl: z.string().url(),
     title: z.string().min(3).max(220),
   }),
 })
@@ -47,6 +57,30 @@ export const publishLocationSchema = z.object({
   }),
 })
 
+export const publicAlertsQuerySchema = z.object({
+  query: z.object({
+    bbox: z
+      .string()
+      .regex(/^-?\d+(\.\d+)?,-?\d+(\.\d+)?,-?\d+(\.\d+)?,-?\d+(\.\d+)?$/)
+      .optional(),
+    limit: z.coerce.number().int().positive().max(1000).default(500),
+    offset: z.coerce.number().int().min(0).default(0),
+    since: z.string().datetime().optional(),
+  }),
+})
+
+export const updateReviewStatusSchema = z.object({
+  body: z.object({
+    status: reviewStatusSchema,
+  }),
+  params: z.object({
+    id: z.uuid(),
+  }),
+})
+
 export type AdminCreateAlertBody = z.infer<typeof adminCreateAlertSchema>['body']
+export type AdminUpdateAlertBody = z.infer<typeof adminUpdateAlertSchema>['body']
 export type BotIngestBody = z.infer<typeof botIngestSchema>['body']
 export type PublishLocationBody = z.infer<typeof publishLocationSchema>['body']
+export type PublicAlertsQuery = z.infer<typeof publicAlertsQuerySchema>['query']
+export type UpdateReviewStatusBody = z.infer<typeof updateReviewStatusSchema>['body']

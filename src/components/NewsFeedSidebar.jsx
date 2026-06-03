@@ -34,12 +34,16 @@ const categoryIcons = {
   transport: Route,
 }
 
+const FEED_RENDER_LIMIT = 250
+
 function NewsFeedSidebar({ alerts, selectedAlert, onSelectAlert }) {
   const [isOpen, setIsOpen] = useState(() =>
     typeof window === 'undefined' ? true : window.innerWidth >= 768,
   )
   const [hasUnread, setHasUnread] = useState(false)
   const previousCountRef = useRef(alerts.length)
+  const visibleAlerts = alerts.slice(0, FEED_RENDER_LIMIT)
+  const hiddenAlertCount = Math.max(alerts.length - visibleAlerts.length, 0)
   const categoryCount = new Set(alerts.map((alert) => alert.category)).size
   const locationCount = new Set(alerts.map(getDisplayLocation).filter(Boolean)).size
 
@@ -138,7 +142,14 @@ function NewsFeedSidebar({ alerts, selectedAlert, onSelectAlert }) {
         </header>
 
         <div className="news-scrollbar min-h-0 flex-1 space-y-2.5 overflow-y-auto p-3">
-          {alerts.map((alert, index) => {
+          {hiddenAlertCount > 0 ? (
+            <div className="border border-amber-300/25 bg-amber-300/10 p-3 text-xs font-semibold leading-5 text-amber-100">
+              Performans koruması aktif: ilk {FEED_RENDER_LIMIT} haber gösteriliyor.
+              {hiddenAlertCount} kayıt haritada cluster olarak duruyor.
+            </div>
+          ) : null}
+
+          {visibleAlerts.map((alert, index) => {
             const isSelected = selectedAlert?.id === alert.id
             const category = getCategoryMeta(alert.category)
             const CategoryIcon = categoryIcons[alert.category] ?? Tag

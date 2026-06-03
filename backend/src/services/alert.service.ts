@@ -3,9 +3,15 @@ import type { Alert, AlertStatus, CreateAlertInput } from '../models/alert.model
 import {
   createAlert,
   deleteAlertById,
+  findAdminAlerts,
+  findAlertBySourceUrl,
   findPendingLocationAlerts,
+  findPendingReviewAlerts,
   findPublishedAlerts,
+  type PublicAlertFilters,
   publishAlertLocation,
+  updateAlertById,
+  updateAlertStatusById,
 } from '../repositories/alert.repository.js'
 import { geocodeLocationText } from './geocoding.service.js'
 
@@ -28,17 +34,25 @@ interface BotIngestPayload {
   lat?: number | null
   lng?: number | null
   locationText?: string
-  sourceUrl?: string
+  sourceUrl: string
   confidence?: number
   metadata?: Record<string, unknown>
 }
 
-export async function getPublishedAlerts(): Promise<Alert[]> {
-  return findPublishedAlerts()
+export async function getPublishedAlerts(filters: PublicAlertFilters): Promise<Alert[]> {
+  return findPublishedAlerts(filters)
 }
 
 export async function getPendingLocationAlerts(): Promise<Alert[]> {
   return findPendingLocationAlerts()
+}
+
+export async function getAdminAlerts(): Promise<Alert[]> {
+  return findAdminAlerts()
+}
+
+export async function getPendingReviewAlerts(): Promise<Alert[]> {
+  return findPendingReviewAlerts()
 }
 
 export async function createManualAdminAlert(payload: AdminCreateAlertPayload): Promise<Alert> {
@@ -50,7 +64,26 @@ export async function createManualAdminAlert(payload: AdminCreateAlertPayload): 
   })
 }
 
+export async function updateAdminAlert(
+  id: string,
+  payload: Partial<AdminCreateAlertPayload> & { status?: AlertStatus },
+): Promise<Alert> {
+  const alert = await updateAlertById(id, {
+    ...payload,
+    source: 'manual_admin',
+  })
+
+  if (!alert) {
+    throw new Error('Alert not found')
+  }
+
+  return alert
+}
+
 export async function ingestBotAlert(payload: BotIngestPayload): Promise<Alert> {
+  const existing = await findAlertBySourceUrl(payload.sourceUrl)
+  if (existing) return existing
+
   const coordinates = await resolveCoordinates(payload)
   const status = coordinates.needsLocation ? 'pending_location' : resolveBotStatus(payload.confidence)
 
@@ -93,6 +126,19 @@ export async function rejectAlert(id: string): Promise<void> {
   if (!deleted) {
     throw new Error('Alert not found')
   }
+}
+
+export async function updateReviewAlertStatus(
+  id: string,
+  status: Extract<AlertStatus, 'published' | 'pending_location' | 'draft'>,
+): Promise<Alert> {
+  const alert = await updateAlertStatusById(id, status)
+
+  if (!alert) {
+    throw new Error('Review alert not found')
+  }
+
+  return alert
 }
 
 async function resolveCoordinates(payload: BotIngestPayload) {

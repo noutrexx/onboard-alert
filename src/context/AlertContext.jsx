@@ -12,13 +12,21 @@ import { AlertContext } from './alertContext'
 
 export function AlertProvider({ children }) {
   const [alerts, setAlerts] = useState([])
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    getAlerts().then((items) => {
-      setAlerts(items)
-      setIsLoading(false)
-    })
+    getAlerts()
+      .then((items) => {
+        setAlerts(items)
+        setError(null)
+      })
+      .catch((requestError) => {
+        setError(requestError)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, [])
 
   const sortedAlerts = useMemo(
@@ -37,8 +45,8 @@ export function AlertProvider({ children }) {
         (alert) =>
           alert.active !== false &&
           (alert.status === undefined || alert.status === 'published') &&
-          alert.lat !== null &&
-          alert.lng !== null,
+          Number.isFinite(Number(alert.lat)) &&
+          Number.isFinite(Number(alert.lng)),
       ),
     [sortedAlerts],
   )
@@ -90,6 +98,7 @@ export function AlertProvider({ children }) {
     addAlert,
     alerts: sortedAlerts,
     deleteAlert,
+    error,
     isLoading,
     pendingAlerts,
     publishAlertLocation,

@@ -1,21 +1,38 @@
 import { useMemo, useState } from 'react'
 import { Activity, Crosshair, Layers, LocateFixed, Tag } from 'lucide-react'
 import LiveMap from '../components/LiveMap'
+import MapModeControl from '../components/MapModeControl'
 import NewsFeedSidebar from '../components/NewsFeedSidebar'
 import { useAlerts } from '../context/useAlerts'
 import { getCategoryMeta } from '../data/categories'
+import { defaultMapModeId, getMapMode } from '../data/mapModes'
 import { getDisplayLocation } from '../utils/formatters'
 
 function HomePage() {
-  const { activeAlerts, isLoading } = useAlerts()
+  const { activeAlerts, error, isLoading } = useAlerts()
   const [selectedAlertId, setSelectedAlertId] = useState(null)
+  const [mapModeId, setMapModeId] = useState(defaultMapModeId)
   const selectedAlert = useMemo(() => {
     return activeAlerts.find((alert) => alert.id === selectedAlertId) ?? activeAlerts[0]
   }, [activeAlerts, selectedAlertId])
   const selectedCategory = selectedAlert ? getCategoryMeta(selectedAlert.category) : null
   const selectedLocation = selectedAlert ? getDisplayLocation(selectedAlert) : ''
+  const selectedMapMode = getMapMode(mapModeId)
 
-  if (isLoading || !selectedAlert) {
+  if (!isLoading && (error || !selectedAlert)) {
+    return (
+      <main className="grid h-dvh w-screen place-items-center bg-slate-950 p-6 text-center text-sm font-semibold text-slate-300">
+        <div className="max-w-md border border-white/10 bg-white/[0.04] p-6">
+          <h1 className="text-lg font-bold text-white">Harita verisi hazir degil</h1>
+          <p className="mt-2 leading-6 text-slate-400">
+            {error ? error.message : 'Yayina alinmis ve koordinati dogrulanmis haber bulunamadi.'}
+          </p>
+        </div>
+      </main>
+    )
+  }
+
+  if (isLoading) {
     return (
       <main className="grid h-dvh w-screen place-items-center bg-slate-950 text-sm font-semibold text-slate-300">
         Haber haritası yükleniyor...
@@ -27,6 +44,7 @@ function HomePage() {
     <main className="relative h-dvh w-screen overflow-hidden bg-slate-950 text-white">
       <LiveMap
         alerts={activeAlerts}
+        mapModeId={mapModeId}
         onSelectAlert={(alert) => setSelectedAlertId(alert.id)}
         selectedAlert={selectedAlert}
       />
@@ -39,6 +57,8 @@ function HomePage() {
         selectedAlert={selectedAlert}
       />
 
+      <MapModeControl activeModeId={mapModeId} onModeChange={setMapModeId} />
+
       <section className="pointer-events-none absolute right-4 top-4 z-[510] hidden w-[310px] border border-white/10 bg-slate-950/70 p-4 shadow-2xl shadow-black/25 backdrop-blur-xl xl:block">
         <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
           <Activity size={15} />
@@ -49,7 +69,7 @@ function HomePage() {
           <InfoPill icon={<LocateFixed size={15} />} label="Odak" value={selectedLocation || 'Harita'} />
           <InfoPill icon={<Tag size={15} />} label="Kategori" value={selectedCategory.label} />
           <InfoPill icon={<Crosshair size={15} />} label="Yakınlık" value="Bölgesel" />
-          <InfoPill icon={<Layers size={15} />} label="Katman" value="Dark Map" />
+          <InfoPill icon={<Layers size={15} />} label="Katman" value={selectedMapMode.label} />
         </div>
       </section>
     </main>
