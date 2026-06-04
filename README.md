@@ -159,6 +159,8 @@ http://127.0.0.1:5173/        Public live map
 http://127.0.0.1:5173/admin   Admin dashboard
 ```
 
+Keep the frontend dev server running while you start the backend in a second terminal.
+
 ### Backend
 
 ```bash
