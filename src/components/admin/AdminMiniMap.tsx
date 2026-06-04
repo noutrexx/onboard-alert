@@ -4,7 +4,7 @@ import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-lea
 import { turkeyBounds } from '../../data/alerts'
 
 function AdminMiniMap({ lat, lng, onChange }) {
-  const position = useMemo(
+  const position = useMemo<[number, number]>(
     () => [
       lat === null || lat === undefined || lat === '' ? 39.0 : Number(lat),
       lng === null || lng === undefined || lng === '' ? 35.2 : Number(lng),

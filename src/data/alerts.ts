@@ -98,8 +98,8 @@ export const alerts = [
   },
 ]
 
-export const turkeyCenter = [39.0, 35.2]
-export const turkeyBounds = [
+export const turkeyCenter: [number, number] = [39.0, 35.2]
+export const turkeyBounds: [[number, number], [number, number]] = [
   [35.5, 25.0],
   [42.4, 45.2],
 ]

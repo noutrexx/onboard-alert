@@ -7,6 +7,7 @@
 
 <p align="center">
   <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-Frontend-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
   <img alt="Vite" src="https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white" />
   <img alt="Leaflet" src="https://img.shields.io/badge/Leaflet-Maps-199900?style=for-the-badge&logo=leaflet&logoColor=white" />
@@ -40,6 +41,7 @@ To stay copyright-safe, the project stores only short snippets and source links.
 - Mini-map location picker for manual entries
 - Bot triage queue for alerts waiting for location approval
 - Node.js TypeScript backend with PostgreSQL migrations
+- TypeScript React frontend with Vite and Tailwind CSS
 - Zod validation, JWT admin guard, and API-key-protected bot webhook
 
 ## Screenshots
@@ -73,6 +75,7 @@ Unified alert schema
 ### Frontend
 
 - React
+- TypeScript
 - Vite
 - Tailwind CSS
 - React Router
@@ -99,15 +102,15 @@ onboard-alert/
   src/
     components/
       admin/
-      AlertMarker.jsx
-      LiveMap.jsx
-      NewsFeedSidebar.jsx
-      SourceEmbedder.jsx
+      AlertMarker.tsx
+      LiveMap.tsx
+      NewsFeedSidebar.tsx
+      SourceEmbedder.tsx
     context/
     data/
     pages/
       admin/
-      HomePage.jsx
+      HomePage.tsx
     services/
     utils/
   backend/
@@ -132,8 +135,8 @@ onboard-alert/
 ### Clone
 
 ```bash
-git clone https://github.com/noutrexx/onboard_alert.git
-cd onboard_alert
+git clone https://github.com/noutrexx/onboard-alert.git
+cd onboard-alert
 ```
 
 ### Frontend
@@ -141,6 +144,12 @@ cd onboard_alert
 ```bash
 npm install
 npm run dev
+```
+
+Type check:
+
+```bash
+npm run typecheck
 ```
 
 Frontend routes:
@@ -237,6 +246,7 @@ Frontend:
 
 ```bash
 npm run build
+npm run typecheck
 npm run lint
 ```
 
@@ -250,7 +260,7 @@ npm run build
 ## Repository
 
 ```txt
-https://github.com/noutrexx/onboard_alert.git
+https://github.com/noutrexx/onboard-alert.git
 ```
 
 ## License

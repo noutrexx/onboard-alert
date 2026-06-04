@@ -1,5 +1,9 @@
 import { alerts as seedAlerts } from '../data/alerts'
 
+type ApiRequestOptions = RequestInit & {
+  admin?: boolean
+}
+
 const STORAGE_KEY = 'onboard-alert:alerts'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? ''
 const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN ?? ''
@@ -57,7 +61,7 @@ function normalizeAlert(payload) {
   }
 }
 
-async function request(path, options = {}) {
+async function request(path: string, options: ApiRequestOptions = {}) {
   if (options.admin && !ADMIN_TOKEN) {
     throw new Error('missing_admin_token')
   }
