@@ -11,7 +11,7 @@ const modeIcons = {
 
 function MapModeControl({ activeModeId, onModeChange }) {
   return (
-    <section className="absolute bottom-20 right-4 z-[520] w-[min(calc(100vw-2rem),360px)] border border-white/10 bg-slate-950/78 p-2 shadow-2xl shadow-black/30 backdrop-blur-xl">
+    <section className="absolute bottom-24 right-4 z-[520] w-[min(calc(100vw-2rem),360px)] border border-white/10 bg-slate-950/78 p-2 shadow-2xl shadow-black/30 backdrop-blur-xl sm:right-16">
       <div className="mb-2 flex items-center justify-between px-1">
         <p className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.22em] text-cyan-200">
           <Layers size={14} />

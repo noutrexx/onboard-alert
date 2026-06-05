@@ -34,13 +34,26 @@ button {
 }
 
 .news-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-color: rgb(103 232 249 / 0.36) transparent;
+  scrollbar-width: thin;
 }
 
 .news-scrollbar::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 6px;
+  height: 6px;
+}
+
+.news-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.news-scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(103 232 249 / 0.26);
+  border-radius: 999px;
+}
+
+.news-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgb(103 232 249 / 0.42);
 }
 
 .admin-input {

@@ -136,11 +136,11 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
             <StatusMetric icon={<Tag size={15} />} label="Kategori" value={categoryCount} />
           </div>
 
-          <p className="mt-3 text-[11px] font-medium text-slate-500">
+          <p className="mt-3 text-[11px] font-medium text-slate-400">
             Kısayol: M aç/kapat, Esc kapat
           </p>
           <div className="mt-3 flex items-center justify-between gap-3 border border-white/10 bg-white/[0.045] px-3 py-2">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
               Veri Modu
             </span>
             <span className="border border-amber-300/35 bg-amber-300/10 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-amber-100">
