@@ -1,1 +1,9 @@
 eslint.config.js linguist-vendored
+package-lock.json linguist-generated=true
+backend/package-lock.json linguist-generated=true
+docs/** linguist-documentation=true
+public/*.svg linguist-generated=true
+src/assets/*.svg linguist-generated=true
+*.sql linguist-detectable=false
+*.css linguist-detectable=false
+*.html linguist-detectable=false

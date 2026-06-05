@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Activity, Crosshair, Layers, LocateFixed, Tag } from 'lucide-react'
+import { Activity, Crosshair, DatabaseZap, Layers, LocateFixed, Radio, Tag } from 'lucide-react'
 import LiveMap from '../components/LiveMap'
 import MapModeControl from '../components/MapModeControl'
 import NewsFeedSidebar from '../components/NewsFeedSidebar'
@@ -9,7 +9,7 @@ import { defaultMapModeId, getMapMode } from '../data/mapModes'
 import { getDisplayLocation } from '../utils/formatters'
 
 function HomePage() {
-  const { activeAlerts, error, isLoading } = useAlerts()
+  const { activeAlerts, dataMode, error, isLoading } = useAlerts()
   const [selectedAlertId, setSelectedAlertId] = useState(null)
   const [mapModeId, setMapModeId] = useState(defaultMapModeId)
   const selectedAlert = useMemo(() => {
@@ -53,6 +53,7 @@ function HomePage() {
 
       <NewsFeedSidebar
         alerts={activeAlerts}
+        dataMode={dataMode}
         onSelectAlert={(alert) => setSelectedAlertId(alert.id)}
         selectedAlert={selectedAlert}
       />
@@ -60,16 +61,32 @@ function HomePage() {
       <MapModeControl activeModeId={mapModeId} onModeChange={setMapModeId} />
 
       <section className="pointer-events-none absolute right-4 top-4 z-[510] hidden w-[310px] border border-white/10 bg-slate-950/70 p-4 shadow-2xl shadow-black/25 backdrop-blur-xl xl:block">
-        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
-          <Activity size={15} />
-          Haber Masası
-        </p>
-        <h2 className="mt-2 text-lg font-semibold text-white">Türkiye yayın kapsamı</h2>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
+              <Activity size={15} />
+              Haber Masası
+            </p>
+            <h2 className="mt-2 text-lg font-semibold text-white">Türkiye yayın kapsamı</h2>
+          </div>
+          <span className="inline-flex items-center gap-1.5 border border-emerald-300/30 bg-emerald-300/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-100">
+            <Radio size={12} className="animate-pulse" />
+            Aktif
+          </span>
+        </div>
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
           <InfoPill icon={<LocateFixed size={15} />} label="Odak" value={selectedLocation || 'Harita'} />
           <InfoPill icon={<Tag size={15} />} label="Kategori" value={selectedCategory.label} />
           <InfoPill icon={<Crosshair size={15} />} label="Yakınlık" value="Bölgesel" />
           <InfoPill icon={<Layers size={15} />} label="Katman" value={selectedMapMode.label} />
+        </div>
+        <div className="mt-3 border border-white/10 bg-white/[0.045] px-3 py-2">
+          <span className="flex items-center gap-1 text-[11px] font-semibold uppercase text-slate-400">
+            <DatabaseZap size={15} />
+            Veri modu
+          </span>
+          <p className="mt-1 font-semibold text-white">{dataMode.label}</p>
+          <p className="mt-1 text-xs leading-5 text-slate-400">{dataMode.description}</p>
         </div>
       </section>
     </main>

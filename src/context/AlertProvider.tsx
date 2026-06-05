@@ -3,6 +3,7 @@ import {
   addAlert as addAlertRequest,
   deleteAlert as deleteAlertRequest,
   getAlerts,
+  getDataMode,
   getPendingAlerts,
   publishAlertLocation as publishAlertLocationRequest,
   resetAlerts as resetAlertsRequest,
@@ -55,6 +56,7 @@ export function AlertProvider({ children }) {
     () => sortedAlerts.filter((alert) => alert.status === 'pending_location'),
     [sortedAlerts],
   )
+  const dataMode = useMemo(() => getDataMode(), [])
 
   async function addAlert(payload) {
     const newAlert = await addAlertRequest(payload)
@@ -97,6 +99,7 @@ export function AlertProvider({ children }) {
     activeAlerts,
     addAlert,
     alerts: sortedAlerts,
+    dataMode,
     deleteAlert,
     error,
     isLoading,

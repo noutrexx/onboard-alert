@@ -9,6 +9,36 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? ''
 const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN ?? ''
 const USE_BACKEND = Boolean(API_BASE_URL)
 
+export function getDataMode() {
+  if (USE_BACKEND && ADMIN_TOKEN) {
+    return {
+      description: 'Backend bağlı; admin token ile tüm kayıtlar yönetiliyor.',
+      id: 'admin-api',
+      isBackendEnabled: true,
+      label: 'Admin API',
+      tone: 'cyan',
+    }
+  }
+
+  if (USE_BACKEND) {
+    return {
+      description: 'Backend bağlı; yalnızca yayınlanmış public haberler okunuyor.',
+      id: 'public-api',
+      isBackendEnabled: true,
+      label: 'Public API',
+      tone: 'emerald',
+    }
+  }
+
+  return {
+    description: 'Backend env tanımlı değil; demo veriler tarayıcıda LocalStorage ile saklanıyor.',
+    id: 'local-demo',
+    isBackendEnabled: false,
+    label: 'Local Demo',
+    tone: 'amber',
+  }
+}
+
 const frontendToBackendSeverity = {
   critical: 'red',
   high: 'yellow',
