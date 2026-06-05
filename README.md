@@ -6,7 +6,6 @@ Location-aware crisis and live news monitoring platform for Turkey. Onboard Aler
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-111827?style=for-the-badge&logo=express&logoColor=white)
-![Sharp](https://img.shields.io/badge/Sharp-99CC00?style=for-the-badge&logo=sharp&logoColor=111111)
 
 ![Onboard Alert full map](docs/screenshots/home-map-full.png)
 
@@ -26,7 +25,7 @@ Location-aware crisis and live news monitoring platform for Turkey. Onboard Aler
 | Frontend | React, TypeScript, Vite, Tailwind CSS, Leaflet, Framer Motion |
 | Backend | Node.js, TypeScript, Express, PostgreSQL, Zod, JWT |
 | Mapping | Leaflet, React Leaflet, marker clustering, CARTO/OpenStreetMap tiles |
-| Media / Assets | SVG icons, screenshot documentation, Sharp-ready media pipeline |
+| Media / Assets | SVG icons, screenshot documentation |
 | Quality | ESLint, TypeScript checks, production build verification |
 
 ## Screenshots
