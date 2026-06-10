@@ -1,12 +1,17 @@
 import { useEffect } from 'react'
 import L from 'leaflet'
 import { useMap } from 'react-leaflet'
+import { turkeyBounds } from '../data/alerts'
 
 function MapFocusController({ selectedAlert }) {
   const map = useMap()
 
   useEffect(() => {
-    if (!selectedAlert) return
+    if (!selectedAlert || selectedAlert.lat == null || selectedAlert.lng == null) {
+      // No active selection → frame the whole country so every marker is visible.
+      map.fitBounds(turkeyBounds, { animate: false, padding: [48, 48] })
+      return
+    }
 
     const zoom = 9
     const size = map.getSize()

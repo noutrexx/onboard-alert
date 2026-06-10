@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import {
   Activity,
   Banknote,
@@ -37,6 +37,7 @@ const categoryIcons = {
 const FEED_RENDER_LIMIT = 250
 
 function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
+  const reduceMotion = useReducedMotion()
   const [isOpen, setIsOpen] = useState(() =>
     typeof window === 'undefined' ? true : window.innerWidth >= 768,
   )
@@ -86,7 +87,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
     <>
       {!isOpen ? (
         <button
-          className="fixed left-3 top-4 z-[620] inline-flex items-center gap-2 border border-cyan-300/35 bg-black/70 px-3 py-3 text-sm font-bold text-cyan-100 shadow-2xl shadow-black/40 backdrop-blur-md transition hover:bg-black/80 md:top-1/2 md:-translate-y-1/2"
+          className="fixed left-3 top-4 z-[620] inline-flex items-center gap-2 border border-cyan-300/35 bg-slate-950/75 px-3 py-3 text-sm font-bold text-cyan-100 shadow-2xl shadow-black/40 backdrop-blur-xl transition hover:bg-slate-950/90 md:top-1/2 md:-translate-y-1/2"
           onClick={openPanel}
           type="button"
         >
@@ -106,7 +107,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
 
       <motion.aside
         animate={{ x: isOpen ? 0 : '-104%' }}
-        className="fixed inset-y-0 left-0 z-[610] flex h-dvh w-full flex-col overflow-hidden border-r border-white/10 bg-black/70 text-white shadow-2xl shadow-black/50 backdrop-blur-md md:w-96"
+        className="fixed inset-y-0 left-0 z-[610] flex h-dvh w-full flex-col overflow-hidden border-r border-white/10 bg-slate-950/75 text-white shadow-2xl shadow-black/50 backdrop-blur-xl md:w-96"
         initial={false}
         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -136,11 +137,11 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
             <StatusMetric icon={<Tag size={15} />} label="Kategori" value={categoryCount} />
           </div>
 
-          <p className="mt-3 text-[11px] font-medium text-slate-500">
+          <p className="mt-3 text-[11px] font-medium text-slate-400">
             Kısayol: M aç/kapat, Esc kapat
           </p>
           <div className="mt-3 flex items-center justify-between gap-3 border border-white/10 bg-white/[0.045] px-3 py-2">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
               Veri Modu
             </span>
             <span className="border border-amber-300/35 bg-amber-300/10 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-amber-100">
@@ -172,9 +173,13 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
                     ? 'border-cyan-300/70 bg-cyan-300/12 shadow-lg shadow-cyan-950/40'
                     : 'border-white/10 bg-white/[0.045] hover:border-cyan-200/35 hover:bg-white/[0.08]'
                 }`}
-                initial={{ opacity: 0, y: 12 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                 key={alert.id}
-                transition={{ delay: index * 0.04, duration: 0.28 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { delay: Math.min(index, 12) * 0.04, duration: 0.28 }
+                }
               >
                 <button
                   className="absolute inset-0 z-0 cursor-pointer"

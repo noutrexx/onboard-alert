@@ -3,8 +3,41 @@
 @import 'leaflet.markercluster/dist/MarkerCluster.css';
 @import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
+:root {
+  color-scheme: dark;
+
+  /* Severity palette — single source of truth (see formatters.ts / markers) */
+  --sev-critical: #ef4444;
+  --sev-high: #f97316;
+  --sev-medium: #facc15;
+  --sev-low: #34d399;
+
+  /* Brand accent + surface tokens */
+  --accent: #67e8f9;
+  --surface: rgb(2 6 23 / 0.75);
+  --surface-border: rgb(255 255 255 / 0.1);
+}
+
 * {
   box-sizing: border-box;
+}
+
+/* Accessibility: visible keyboard focus across all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Accessibility: respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 html,
@@ -193,30 +226,30 @@ button {
 .marker-pin.red .marker-pulse,
 .marker-pin.red .marker-core,
 .marker-pin.critical .marker-core {
-  background: #ef4444;
+  background: var(--sev-critical);
 }
 
 .marker-pin.high .marker-pulse,
 .marker-pin.yellow .marker-pulse,
 .marker-pin.yellow .marker-core,
 .marker-pin.high .marker-core {
-  background: #f97316;
+  background: var(--sev-high);
 }
 
 .marker-pin.medium .marker-pulse,
 .marker-pin.medium .marker-core {
-  background: #facc15;
+  background: var(--sev-medium);
 }
 
 .marker-pin.green .marker-pulse,
 .marker-pin.green .marker-core {
-  background: #34d399;
+  background: var(--sev-low);
 }
 
 .marker-pin.selected .marker-core {
   width: 22px;
   height: 22px;
-  border-color: #67e8f9;
+  border-color: var(--accent);
 }
 
 .marker-pin.selected .marker-ring {

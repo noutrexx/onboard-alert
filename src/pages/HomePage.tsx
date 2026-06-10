@@ -13,13 +13,13 @@ function HomePage() {
   const [selectedAlertId, setSelectedAlertId] = useState(null)
   const [mapModeId, setMapModeId] = useState(defaultMapModeId)
   const selectedAlert = useMemo(() => {
-    return activeAlerts.find((alert) => alert.id === selectedAlertId) ?? activeAlerts[0]
+    return activeAlerts.find((alert) => alert.id === selectedAlertId) ?? null
   }, [activeAlerts, selectedAlertId])
   const selectedCategory = selectedAlert ? getCategoryMeta(selectedAlert.category) : null
   const selectedLocation = selectedAlert ? getDisplayLocation(selectedAlert) : ''
   const selectedMapMode = getMapMode(mapModeId)
 
-  if (!isLoading && (error || !selectedAlert)) {
+  if (!isLoading && (error || activeAlerts.length === 0)) {
     return (
       <main className="grid h-dvh w-screen place-items-center bg-slate-950 p-6 text-center text-sm font-semibold text-slate-300">
         <div className="max-w-md border border-white/10 bg-white/[0.04] p-6">
@@ -34,8 +34,18 @@ function HomePage() {
 
   if (isLoading) {
     return (
-      <main className="grid h-dvh w-screen place-items-center bg-slate-950 text-sm font-semibold text-slate-300">
-        Haber haritası yükleniyor...
+      <main className="grid h-dvh w-screen place-items-center bg-slate-950 text-slate-300">
+        <div className="flex flex-col items-center gap-5">
+          <span className="relative grid h-16 w-16 place-items-center">
+            <span className="absolute inset-0 animate-ping border border-cyan-300/40" />
+            <span className="absolute inset-2 border border-cyan-300/25" />
+            <Radio className="animate-pulse text-cyan-200" size={22} />
+          </span>
+          <div className="text-center">
+            <p className="text-sm font-semibold text-white">Haber haritası yükleniyor</p>
+            <p className="mt-1 text-xs text-slate-400">Yayındaki uyarılar hazırlanıyor...</p>
+          </div>
+        </div>
       </main>
     )
   }
@@ -60,7 +70,7 @@ function HomePage() {
 
       <MapModeControl activeModeId={mapModeId} onModeChange={setMapModeId} />
 
-      <section className="pointer-events-none absolute right-4 top-4 z-[510] hidden w-[310px] border border-white/10 bg-slate-950/70 p-4 shadow-2xl shadow-black/25 backdrop-blur-xl xl:block">
+      <section className="pointer-events-none absolute right-4 top-4 z-[510] hidden w-[310px] border border-white/10 bg-slate-950/75 p-4 shadow-2xl shadow-black/25 backdrop-blur-xl xl:block">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
@@ -75,8 +85,8 @@ function HomePage() {
           </span>
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-          <InfoPill icon={<LocateFixed size={15} />} label="Odak" value={selectedLocation || 'Harita'} />
-          <InfoPill icon={<Tag size={15} />} label="Kategori" value={selectedCategory.label} />
+          <InfoPill icon={<LocateFixed size={15} />} label="Odak" value={selectedLocation || 'Türkiye geneli'} />
+          <InfoPill icon={<Tag size={15} />} label="Kategori" value={selectedCategory?.label ?? 'Tümü'} />
           <InfoPill icon={<Crosshair size={15} />} label="Yakınlık" value="Bölgesel" />
           <InfoPill icon={<Layers size={15} />} label="Katman" value={selectedMapMode.label} />
         </div>

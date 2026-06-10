@@ -36,15 +36,15 @@ function AdminNewsList() {
       </div>
 
       <div className="overflow-x-auto border border-white/10 bg-white/[0.035]">
-        <table className="min-w-full divide-y divide-white/10 text-left text-sm">
+        <table className="w-full min-w-[820px] divide-y divide-white/10 text-left text-sm">
           <thead className="bg-white/[0.04] text-xs uppercase tracking-wide text-slate-400">
             <tr>
-              <th className="px-4 py-3">Başlık</th>
-              <th className="px-4 py-3">Tarih</th>
-              <th className="px-4 py-3">Şiddet</th>
-              <th className="px-4 py-3">Kategori</th>
-              <th className="px-4 py-3">Durum</th>
-              <th className="px-4 py-3 text-right">İşlem</th>
+              <th className="w-[42%] px-4 py-3">Başlık</th>
+              <th className="whitespace-nowrap px-4 py-3">Tarih</th>
+              <th className="whitespace-nowrap px-4 py-3">Şiddet</th>
+              <th className="whitespace-nowrap px-4 py-3">Kategori</th>
+              <th className="whitespace-nowrap px-4 py-3">Durum</th>
+              <th className="whitespace-nowrap px-4 py-3 text-right">İşlem</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/10">
@@ -53,18 +53,18 @@ function AdminNewsList() {
 
               return (
                 <tr className="text-slate-200" key={alert.id}>
-                  <td className="max-w-[360px] px-4 py-4">
-                    <p className="font-semibold text-white">{alert.title}</p>
-                    <p className="mt-1 truncate text-xs text-slate-500">{alert.location}</p>
+                  <td className="px-4 py-4 align-top">
+                    <p className="line-clamp-2 font-semibold text-white">{alert.title}</p>
+                    <p className="mt-1 truncate text-xs text-slate-400">{alert.location}</p>
                   </td>
-                  <td className="px-4 py-4 text-slate-300">{formatAlertTime(alert.timestamp)}</td>
-                  <td className="px-4 py-4">{severityLabel(alert.severity)}</td>
-                  <td className="px-4 py-4">
+                  <td className="whitespace-nowrap px-4 py-4 align-top text-slate-300">{formatAlertTime(alert.timestamp)}</td>
+                  <td className="whitespace-nowrap px-4 py-4 align-top">{severityLabel(alert.severity)}</td>
+                  <td className="whitespace-nowrap px-4 py-4 align-top">
                     <span className={`border px-2 py-1 text-xs font-semibold ${category.accentClass}`}>
                       {category.label}
                     </span>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="whitespace-nowrap px-4 py-4 align-top">
                     <span
                       className={`border px-2 py-1 text-xs font-semibold ${
                         alert.active === false
@@ -75,7 +75,7 @@ function AdminNewsList() {
                       {alert.active === false ? 'Pasif' : 'Aktif'}
                     </span>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-4 align-top">
                     <div className="flex justify-end gap-2">
                       <Link
                         className="inline-flex items-center gap-1 border border-white/10 bg-white/[0.045] px-2 py-1 text-xs font-semibold text-slate-200 transition hover:bg-white/[0.08]"
