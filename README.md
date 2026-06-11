@@ -1,5 +1,9 @@
 # Onboard Alert
 
+<div align="center">
+  <img src="assets/banner.svg" alt="Onboard Alert" width="100%" />
+</div>
+
 Location-aware crisis and live news monitoring platform for Turkey. Onboard Alert combines an interactive Leaflet map, a real-time style news feed, admin triage screens, and an Express/PostgreSQL API for verified alert publishing.
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
@@ -27,6 +31,30 @@ Location-aware crisis and live news monitoring platform for Turkey. Onboard Aler
 | Mapping | Leaflet, React Leaflet, marker clustering, CARTO/OpenStreetMap tiles |
 | Media / Assets | SVG icons, screenshot documentation |
 | Quality | ESLint, TypeScript checks, production build verification |
+
+## Architecture
+
+```mermaid
+flowchart LR
+    SRC[onboard-feeder<br/>RSS / news signals] -->|signed webhook| API
+
+    subgraph BE["Express + PostgreSQL API"]
+        direction TB
+        API[Alert API<br/>Zod validation] --> GEO[Geocoding service]
+        API --> DB[(PostgreSQL<br/>alerts)]
+        ADMIN[Admin routes<br/>JWT auth] --> DB
+    end
+
+    DB --> PUB[/Public API/]
+    PUB --> FE
+
+    subgraph FE["React + Vite Frontend"]
+        direction TB
+        MAP[Leaflet map<br/>clustered markers]
+        FEED[Live news feed]
+        ADMINUI[Admin triage UI] --> ADMIN
+    end
+```
 
 ## Screenshots
 
