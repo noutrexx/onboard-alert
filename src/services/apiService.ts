@@ -6,27 +6,20 @@ type ApiRequestOptions = RequestInit & {
 
 const STORAGE_KEY = 'onboard-alert:alerts'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? ''
-const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN ?? ''
 const USE_BACKEND = Boolean(API_BASE_URL)
 
-export function getDataMode() {
-  if (USE_BACKEND && ADMIN_TOKEN) {
-    return {
-      description: 'Backend bağlı; admin token ile tüm kayıtlar yönetiliyor.',
-      id: 'admin-api',
-      isBackendEnabled: true,
-      label: 'Admin API',
-      tone: 'cyan',
-    }
-  }
+export function isBackendEnabled() {
+  return USE_BACKEND
+}
 
+export function getDataMode() {
   if (USE_BACKEND) {
     return {
-      description: 'Backend bağlı; yalnızca yayınlanmış public haberler okunuyor.',
-      id: 'public-api',
+      description: 'Backend bagli; admin islemleri guvenli HttpOnly oturum ile korunuyor.',
+      id: 'secure-api',
       isBackendEnabled: true,
-      label: 'Public API',
-      tone: 'emerald',
+      label: 'Guvenli API',
+      tone: 'cyan',
     }
   }
 
@@ -92,18 +85,15 @@ function normalizeAlert(payload) {
 }
 
 async function request(path: string, options: ApiRequestOptions = {}) {
-  if (options.admin && !ADMIN_TOKEN) {
-    throw new Error('missing_admin_token')
-  }
-
+  const { admin, ...requestOptions } = options
   const headers = {
     'Content-Type': 'application/json',
-    ...(options.admin ? { Authorization: `Bearer ${ADMIN_TOKEN}` } : {}),
-    ...(options.headers ?? {}),
+    ...(requestOptions.headers ?? {}),
   }
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
+    ...requestOptions,
+    credentials: admin ? 'include' : requestOptions.credentials,
     headers,
   })
 
@@ -153,12 +143,31 @@ function toBackendAlert(payload) {
   }
 }
 
-export async function getAlerts() {
-  if (USE_BACKEND && ADMIN_TOKEN) {
-    const data = await request('/api/admin/alerts', { admin: true })
-    return data.map(fromBackendAlert)
-  }
+export async function getAdminSession() {
+  if (!USE_BACKEND) return { authenticated: true }
+  return request('/api/admin/auth/session', { admin: true })
+}
 
+export async function loginAdmin(password: string) {
+  return request('/api/admin/auth/login', {
+    admin: true,
+    body: JSON.stringify({ password }),
+    method: 'POST',
+  })
+}
+
+export async function logoutAdmin() {
+  if (!USE_BACKEND) return { authenticated: false }
+  return request('/api/admin/auth/logout', { admin: true, method: 'POST' })
+}
+
+export async function getAdminAlerts() {
+  if (!USE_BACKEND) return readAlerts()
+  const data = await request('/api/admin/alerts', { admin: true })
+  return data.map(fromBackendAlert)
+}
+
+export async function getAlerts() {
   if (USE_BACKEND) {
     const data = await request('/api/alerts?limit=500')
     return data.map(fromBackendAlert)
@@ -168,7 +177,7 @@ export async function getAlerts() {
 }
 
 export async function getPendingAlerts() {
-  if (USE_BACKEND && ADMIN_TOKEN) {
+  if (USE_BACKEND) {
     const data = await request('/api/admin/alerts/pending', { admin: true })
     return data.map(fromBackendAlert)
   }

@@ -1,6 +1,8 @@
-import { NavLink, Outlet } from 'react-router-dom'
-import { FilePlus2, ListChecks, Map, MapPinned, Settings } from 'lucide-react'
+import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { FilePlus2, ListChecks, LogOut, Map, MapPinned, Settings } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useAlerts } from '../../context/useAlerts'
+import { getAdminSession, isBackendEnabled, logoutAdmin } from '../../services/apiService'
 
 const navItems = [
   { icon: ListChecks, label: 'Haberler', to: '/admin/news' },
@@ -10,7 +12,35 @@ const navItems = [
 ]
 
 function AdminLayout() {
-  const { pendingAlerts } = useAlerts()
+  const { pendingAlerts, refreshAdminAlerts } = useAlerts()
+  const navigate = useNavigate()
+  const [authState, setAuthState] = useState(isBackendEnabled() ? 'checking' : 'authenticated')
+
+  useEffect(() => {
+    if (!isBackendEnabled()) return
+
+    getAdminSession()
+      .then(() => refreshAdminAlerts())
+      .then(() => setAuthState('authenticated'))
+      .catch(() => setAuthState('unauthenticated'))
+  }, [refreshAdminAlerts])
+
+  async function handleLogout() {
+    await logoutAdmin()
+    navigate('/admin/login', { replace: true })
+  }
+
+  if (authState === 'checking') {
+    return (
+      <main className="grid min-h-dvh place-items-center bg-slate-950 text-slate-300">
+        Oturum dogrulaniyor...
+      </main>
+    )
+  }
+
+  if (authState === 'unauthenticated') {
+    return <Navigate replace to="/admin/login" />
+  }
 
   return (
     <main className="min-h-dvh bg-slate-950 text-slate-100">
@@ -69,6 +99,16 @@ function AdminLayout() {
             >
               Haritayı Aç
             </a>
+            {isBackendEnabled() ? (
+              <button
+                className="inline-flex items-center gap-2 border border-rose-300/30 bg-rose-300/10 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-300/16"
+                onClick={handleLogout}
+                type="button"
+              >
+                <LogOut size={16} />
+                Cikis
+              </button>
+            ) : null}
           </header>
           <div className="p-5">
             <Outlet />

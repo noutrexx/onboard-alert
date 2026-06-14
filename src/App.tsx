@@ -5,11 +5,13 @@ import AdminNewsList from './pages/admin/AdminNewsList'
 import AdminNewsForm from './pages/admin/AdminNewsForm'
 import AdminPendingAlerts from './pages/admin/AdminPendingAlerts'
 import AdminSettings from './pages/admin/AdminSettings'
+import AdminLogin from './pages/admin/AdminLogin'
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminNewsList />} />
         <Route path="news" element={<AdminNewsList />} />

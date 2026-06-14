@@ -19,7 +19,7 @@ Location-aware crisis and live news monitoring platform for Turkey. Onboard Aler
 - Collapsible live news feed with source cards, keyboard shortcuts, and alert focus.
 - Admin panel for manual alert creation, editing, deletion, and pending-location triage.
 - Local demo mode for zero-backend previews.
-- Backend mode with Express, PostgreSQL, JWT-protected admin routes, and bot ingest endpoint.
+- Backend mode with Express, PostgreSQL, HttpOnly cookie-protected admin routes, and bot ingest endpoint.
 - Clear data-mode indicator so operators can see whether the UI is using Local Demo, Public API, or Admin API mode.
 
 ## Stack
@@ -123,17 +123,15 @@ The frontend automatically selects a data mode from environment variables.
 | Mode | When it is used | Behavior |
 | --- | --- | --- |
 | Local Demo | `VITE_API_BASE_URL` is not set | Reads and writes demo alerts in browser `localStorage`. |
-| Public API | `VITE_API_BASE_URL` is set, `VITE_ADMIN_TOKEN` is not set | Reads published alerts from the backend. |
-| Admin API | `VITE_API_BASE_URL` and `VITE_ADMIN_TOKEN` are set | Reads and manages admin alert records through protected backend routes. |
+| Secure API | `VITE_API_BASE_URL` is set | Reads public alerts and requires admin login before protected operations. |
 
 Create a frontend `.env.local` only when connecting to the backend:
 
 ```env
-VITE_API_BASE_URL=http://localhost:4000
-VITE_ADMIN_TOKEN=<jwt-token-for-development>
+VITE_API_BASE_URL=http://127.0.0.1:4000
 ```
 
-> For production, do not ship a long-lived admin token in the browser bundle. Add a real login/session flow before exposing admin routes publicly.
+The frontend never receives or stores an admin JWT. Sign in at `/admin/login`; the backend creates an `HttpOnly`, `SameSite=Strict` session cookie. Keep the frontend and API on the same site, including using `127.0.0.1` for both during local development.
 
 ## Backend Setup
 
@@ -152,6 +150,7 @@ NODE_ENV=development
 PORT=4000
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/onboard_alert
 JWT_SECRET=replace-with-a-strong-secret
+ADMIN_PASSWORD_HASH=<scrypt-password-hash>
 BOT_INGEST_API_KEY=replace-with-a-long-bot-key
 BOT_AUTO_PUBLISH_CONFIDENCE=0.82
 CORS_ORIGIN=http://127.0.0.1:5173
@@ -190,12 +189,15 @@ http://localhost:4000
 | Method | Route | Auth | Purpose |
 | --- | --- | --- | --- |
 | `GET` | `/api/alerts` | Public | Published map alerts. |
-| `GET` | `/api/admin/alerts` | Admin JWT | Full admin alert list. |
-| `GET` | `/api/admin/alerts/pending` | Admin JWT | Alerts waiting for location triage. |
-| `POST` | `/api/admin/alerts` | Admin JWT | Create manual alert. |
-| `PATCH` | `/api/admin/alerts/:id` | Admin JWT | Update manual alert. |
-| `PATCH` | `/api/admin/alerts/:id/publish-location` | Admin JWT | Approve a pending alert location. |
-| `DELETE` | `/api/admin/alerts/:id` | Admin JWT | Delete alert. |
+| `POST` | `/api/admin/auth/login` | Admin password | Create a secure admin session. |
+| `GET` | `/api/admin/auth/session` | Admin session | Validate the admin session. |
+| `POST` | `/api/admin/auth/logout` | Public | Clear the admin session. |
+| `GET` | `/api/admin/alerts` | Admin session | Full admin alert list. |
+| `GET` | `/api/admin/alerts/pending` | Admin session | Alerts waiting for location triage. |
+| `POST` | `/api/admin/alerts` | Admin session | Create manual alert. |
+| `PATCH` | `/api/admin/alerts/:id` | Admin session | Update manual alert. |
+| `PATCH` | `/api/admin/alerts/:id/publish-location` | Admin session | Approve a pending alert location. |
+| `DELETE` | `/api/admin/alerts/:id` | Admin session | Delete alert. |
 | `POST` | `/api/webhooks/bot-ingest` | Bot API key | Ingest automated source alerts. |
 
 Example bot ingest request:
@@ -216,8 +218,8 @@ curl -X POST http://localhost:4000/api/webhooks/bot-ingest \
 
 ## Production Checklist
 
-- Replace browser-injected admin token with a login/session based admin flow.
 - Use strong secrets for `JWT_SECRET` and `BOT_INGEST_API_KEY`.
+- Generate a unique `ADMIN_PASSWORD_HASH` and restrict login attempts.
 - Run all migrations during deployment.
 - Set `CORS_ORIGIN` to the deployed frontend origin.
 - Add monitoring for bot ingest failures, API errors, and pending-location backlog.

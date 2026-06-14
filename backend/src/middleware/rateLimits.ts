@@ -21,6 +21,11 @@ export const adminApiRateLimit = standardLimit(
   'admin_rate_limit_exceeded',
 )
 
+export const adminLoginRateLimit = standardLimit(
+  env.RATE_LIMIT_ADMIN_LOGIN_PER_MINUTE,
+  'admin_login_rate_limit_exceeded',
+)
+
 export const botIngestRateLimit = standardLimit(
   env.RATE_LIMIT_BOT_PER_MINUTE,
   'bot_rate_limit_exceeded',

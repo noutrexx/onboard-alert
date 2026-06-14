@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   addAlert as addAlertRequest,
   deleteAlert as deleteAlertRequest,
   getAlerts,
+  getAdminAlerts,
   getDataMode,
   getPendingAlerts,
   publishAlertLocation as publishAlertLocationRequest,
@@ -82,6 +83,13 @@ export function AlertProvider({ children }) {
     return pending
   }
 
+  const refreshAdminAlerts = useCallback(async () => {
+    const items = await getAdminAlerts()
+    setAlerts(items)
+    setError(null)
+    return items
+  }, [])
+
   async function publishAlertLocation(id, payload) {
     const updatedAlert = await publishAlertLocationRequest(id, payload)
     setAlerts((current) =>
@@ -106,6 +114,7 @@ export function AlertProvider({ children }) {
     pendingAlerts,
     publishAlertLocation,
     refreshPendingAlerts,
+    refreshAdminAlerts,
     resetAlerts,
     updateAlert,
   }
