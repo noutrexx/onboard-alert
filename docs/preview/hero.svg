@@ -1,0 +1,172 @@
+<svg width="1600" height="680" viewBox="0 0 1600 680" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <radialGradient id="vign" cx="58%" cy="42%" r="75%">
+      <stop offset="34%" stop-color="#020617" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#020617" stop-opacity="0.55"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1322" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#05070f" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="headerGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="selCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#67e8f9" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#67e8f9" stop-opacity="0.04"/>
+    </linearGradient>
+    <radialGradient id="mRed" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f87171" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#67e8f9" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#67e8f9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mAmber" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fcd34d" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#fcd34d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- map base -->
+  <rect width="1600" height="680" fill="#020617"/>
+
+  <!-- abstract landmass / graticule -->
+  <g opacity="0.5">
+    <path d="M620 250 C720 200 880 210 1010 250 C1170 300 1300 290 1380 350 C1430 390 1380 470 1250 500 C1080 540 880 520 760 470 C660 430 560 420 560 360 C560 310 580 280 620 250 Z" fill="#0c1626"/>
+    <path d="M700 300 C800 280 940 300 1040 340 L1010 420 C900 440 800 430 740 400 Z" fill="#0f1a2e"/>
+  </g>
+  <g stroke="#1e293b" stroke-width="1" opacity="0.35">
+    <line x1="400" y1="120" x2="1600" y2="120"/>
+    <line x1="400" y1="260" x2="1600" y2="260"/>
+    <line x1="400" y1="400" x2="1600" y2="400"/>
+    <line x1="400" y1="540" x2="1600" y2="540"/>
+    <line x1="560" y1="0" x2="560" y2="680"/>
+    <line x1="760" y1="0" x2="760" y2="680"/>
+    <line x1="960" y1="0" x2="960" y2="680"/>
+    <line x1="1160" y1="0" x2="1160" y2="680"/>
+    <line x1="1360" y1="0" x2="1360" y2="680"/>
+  </g>
+
+  <!-- markers -->
+  <g>
+    <circle cx="820" cy="300" r="34" fill="url(#mCyan)"/>
+    <circle cx="820" cy="300" r="9" fill="#67e8f9" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="1060" cy="250" r="30" fill="url(#mRed)"/>
+    <circle cx="1060" cy="250" r="8" fill="#f87171" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="980" cy="420" r="30" fill="url(#mAmber)"/>
+    <circle cx="980" cy="420" r="8" fill="#fcd34d" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="1230" cy="370" r="28" fill="url(#mCyan)"/>
+    <circle cx="1230" cy="370" r="8" fill="#34d399" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="700" cy="430" r="26" fill="url(#mRed)"/>
+    <circle cx="700" cy="430" r="7" fill="#f87171" stroke="#ffffff" stroke-width="2"/>
+  </g>
+
+  <rect width="1600" height="680" fill="url(#vign)"/>
+
+  <!-- ===== SIDEBAR ===== -->
+  <g>
+    <rect x="-30" y="0" width="410" height="680" rx="24" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.10"/>
+    <!-- header glow -->
+    <rect x="0" y="0" width="380" height="150" fill="url(#headerGlow)"/>
+    <!-- live pill -->
+    <rect x="24" y="28" width="170" height="26" rx="13" fill="#22d3ee" fill-opacity="0.10" stroke="#67e8f9" stroke-opacity="0.30"/>
+    <circle cx="40" cy="41" r="4" fill="#67e8f9"/>
+    <text x="54" y="45" fill="#a5f3fc" font-size="11" font-weight="700" letter-spacing="2">LIVE NEWS MAP</text>
+    <text x="24" y="92" fill="#ffffff" font-size="24" font-weight="700">Türkiye Haber Akışı</text>
+
+    <!-- metrics -->
+    <g>
+      <rect x="24" y="116" width="108" height="58" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="78" y="146" fill="#ffffff" font-size="19" font-weight="700" text-anchor="middle">6</text>
+      <text x="78" y="164" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">Haber</text>
+      <rect x="138" y="116" width="108" height="58" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="192" y="146" fill="#ffffff" font-size="19" font-weight="700" text-anchor="middle">6</text>
+      <text x="192" y="164" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">Şehir</text>
+      <rect x="252" y="116" width="108" height="58" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="306" y="146" fill="#ffffff" font-size="19" font-weight="700" text-anchor="middle">5</text>
+      <text x="306" y="164" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">Kategori</text>
+    </g>
+    <line x1="0" y1="196" x2="380" y2="196" stroke="#ffffff" stroke-opacity="0.10"/>
+
+    <!-- selected card -->
+    <g>
+      <rect x="20" y="214" width="340" height="170" rx="16" fill="url(#selCard)" stroke="#67e8f9" stroke-opacity="0.55"/>
+      <rect x="36" y="230" width="86" height="26" rx="13" fill="#a78bfa" fill-opacity="0.14" stroke="#c4b5fd" stroke-opacity="0.40"/>
+      <text x="52" y="247" fill="#ede9fe" font-size="11" font-weight="700">Bölgesel</text>
+      <circle cx="346" cy="232" r="5" fill="#fcd34d"/>
+      <text x="248" y="248" fill="#94a3b8" font-size="11" font-weight="500">Dün 22:58</text>
+      <text x="36" y="288" fill="#ffffff" font-size="15.5" font-weight="600">Antalya turizm bölgesinde yeni</text>
+      <text x="36" y="310" fill="#ffffff" font-size="15.5" font-weight="600">ekonomi açıklaması</text>
+      <text x="36" y="336" fill="#cbd5e1" font-size="12.5">Turizm işletmeleri ve yerel yönetim sezon</text>
+      <text x="36" y="354" fill="#cbd5e1" font-size="12.5">verilerine ilişkin yeni açıklama geldi.</text>
+      <circle cx="42" cy="372" r="2.5" fill="#94a3b8"/>
+      <text x="52" y="376" fill="#94a3b8" font-size="11.5" font-weight="600">Antalya</text>
+    </g>
+
+    <!-- second card -->
+    <g>
+      <rect x="20" y="396" width="340" height="150" rx="16" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <rect x="36" y="412" width="70" height="26" rx="13" fill="#38bdf8" fill-opacity="0.14" stroke="#7dd3fc" stroke-opacity="0.40"/>
+      <text x="52" y="429" fill="#e0f2fe" font-size="11" font-weight="700">Siyasi</text>
+      <circle cx="346" cy="414" r="5" fill="#fb923c"/>
+      <text x="248" y="430" fill="#94a3b8" font-size="11" font-weight="500">Dün 19:42</text>
+      <text x="36" y="470" fill="#ffffff" font-size="15.5" font-weight="600">Ankara merkezli kritik toplantı</text>
+      <text x="36" y="492" fill="#ffffff" font-size="15.5" font-weight="600">trafiği</text>
+      <text x="36" y="518" fill="#cbd5e1" font-size="12.5">Kamu kurumları çevresinde yoğun güvenlik</text>
+      <circle cx="42" cy="536" r="2.5" fill="#94a3b8"/>
+      <text x="52" y="540" fill="#94a3b8" font-size="11.5" font-weight="600">Ankara</text>
+    </g>
+  </g>
+
+  <!-- ===== INFO PANEL (top-right) ===== -->
+  <g>
+    <rect x="1256" y="24" width="320" height="172" rx="16" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.10"/>
+    <circle cx="1280" cy="50" r="5" fill="#67e8f9"/>
+    <text x="1294" y="54" fill="#a5f3fc" font-size="11" font-weight="700" letter-spacing="2">HABER MASASI</text>
+    <text x="1272" y="86" fill="#ffffff" font-size="18" font-weight="600">Türkiye yayın kapsamı</text>
+    <rect x="1272" y="104" width="142" height="38" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.10"/>
+    <text x="1284" y="120" fill="#94a3b8" font-size="9.5" font-weight="600">ODAK</text>
+    <text x="1284" y="135" fill="#ffffff" font-size="12" font-weight="600">Antalya</text>
+    <rect x="1420" y="104" width="142" height="38" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.10"/>
+    <text x="1432" y="120" fill="#94a3b8" font-size="9.5" font-weight="600">KATEGORİ</text>
+    <text x="1432" y="135" fill="#ffffff" font-size="12" font-weight="600">Bölgesel</text>
+    <rect x="1272" y="148" width="142" height="38" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.10"/>
+    <text x="1284" y="164" fill="#94a3b8" font-size="9.5" font-weight="600">YAKINLIK</text>
+    <text x="1284" y="179" fill="#ffffff" font-size="12" font-weight="600">Bölgesel</text>
+    <rect x="1420" y="148" width="142" height="38" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.10"/>
+    <text x="1432" y="164" fill="#94a3b8" font-size="9.5" font-weight="600">KATMAN</text>
+    <text x="1432" y="179" fill="#ffffff" font-size="12" font-weight="600">Karanlık</text>
+  </g>
+
+  <!-- ===== MAP MODE CONTROL (bottom-right) ===== -->
+  <g>
+    <rect x="1196" y="468" width="380" height="120" rx="16" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.10"/>
+    <circle cx="1218" cy="490" r="5" fill="#67e8f9"/>
+    <text x="1232" y="494" fill="#a5f3fc" font-size="11" font-weight="700" letter-spacing="2">HARİTA MODU</text>
+    <rect x="1510" y="481" width="50" height="20" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="1535" y="495" fill="#94a3b8" font-size="9.5" font-weight="600" text-anchor="middle">LIVE</text>
+    <g>
+      <rect x="1212" y="510" width="64" height="62" rx="12" fill="#67e8f9" fill-opacity="0.15" stroke="#67e8f9" stroke-opacity="0.55"/>
+      <text x="1244" y="548" fill="#a5f3fc" font-size="11" font-weight="700" text-anchor="middle">Dark</text>
+      <rect x="1284" y="510" width="64" height="62" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="1316" y="548" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">Light</text>
+      <rect x="1356" y="510" width="64" height="62" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="1388" y="548" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">Std</text>
+      <rect x="1428" y="510" width="64" height="62" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="1460" y="548" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">Topo</text>
+      <rect x="1500" y="510" width="64" height="62" rx="12" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.10"/>
+      <text x="1532" y="548" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">Sat</text>
+    </g>
+  </g>
+
+  <!-- zoom control + attribution -->
+  <g>
+    <rect x="1520" y="604" width="44" height="84" rx="14" fill="#0f172a" fill-opacity="0.72" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="1542" y="632" fill="#e2e8f0" font-size="20" font-weight="500" text-anchor="middle">+</text>
+    <line x1="1520" y1="646" x2="1564" y2="646" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="1542" y="676" fill="#e2e8f0" font-size="20" font-weight="500" text-anchor="middle">−</text>
+  </g>
+</svg>

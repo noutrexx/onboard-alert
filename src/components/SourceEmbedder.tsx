@@ -26,7 +26,7 @@ function SourceLinkCard({ compact, sourceUrl }) {
   const host = getSourceHost(sourceUrl)
 
   return (
-    <div className="mt-3 border border-white/10 bg-white/[0.04] p-3">
+    <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.04] p-3">
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
         <Link2 size={14} />
         {host || 'Orijinal kaynak'}
@@ -37,7 +37,7 @@ function SourceLinkCard({ compact, sourceUrl }) {
         </p>
       ) : null}
       <a
-        className="mt-3 inline-flex w-full items-center justify-center gap-2 border border-cyan-300/40 bg-cyan-300/10 px-3 py-2 text-xs font-bold text-cyan-100 transition hover:bg-cyan-300/16"
+        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-300/40 bg-cyan-300/10 px-3 py-2 text-xs font-bold text-cyan-100 transition hover:bg-cyan-300/16"
         href={sourceUrl}
         rel="noopener noreferrer"
         target="_blank"
@@ -52,19 +52,19 @@ function SourceLinkCard({ compact, sourceUrl }) {
 function TweetSkeleton({ compact }) {
   return (
     <div
-      className={`border border-white/10 bg-white/[0.04] p-3 ${compact ? 'h-40' : 'h-56'}`}
+      className={`rounded-xl border border-white/10 bg-white/[0.04] p-3 ${compact ? 'h-40' : 'h-56'}`}
     >
       <div className="flex items-center gap-3">
-        <div className="h-9 w-9 animate-pulse bg-white/10" />
+        <div className="h-9 w-9 animate-pulse rounded-full bg-white/10" />
         <div className="grid flex-1 gap-2">
-          <div className="h-3 w-1/2 animate-pulse bg-white/10" />
-          <div className="h-3 w-1/3 animate-pulse bg-white/10" />
+          <div className="h-3 w-1/2 animate-pulse rounded-full bg-white/10" />
+          <div className="h-3 w-1/3 animate-pulse rounded-full bg-white/10" />
         </div>
       </div>
       <div className="mt-5 grid gap-2">
-        <div className="h-3 animate-pulse bg-white/10" />
-        <div className="h-3 w-11/12 animate-pulse bg-white/10" />
-        <div className="h-3 w-8/12 animate-pulse bg-white/10" />
+        <div className="h-3 animate-pulse rounded-full bg-white/10" />
+        <div className="h-3 w-11/12 animate-pulse rounded-full bg-white/10" />
+        <div className="h-3 w-8/12 animate-pulse rounded-full bg-white/10" />
       </div>
     </div>
   )

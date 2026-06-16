@@ -39,7 +39,7 @@ function HomePage() {
   if (!isLoading && (error || activeAlerts.length === 0)) {
     return (
       <main className="grid h-dvh w-screen place-items-center bg-slate-950 p-6 text-center text-sm font-semibold text-slate-300">
-        <div className="max-w-md border border-white/10 bg-white/[0.04] p-6">
+        <div className="max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl shadow-black/40 ring-1 ring-white/5">
           <h1 className="text-lg font-bold text-white">Harita verisi hazir degil</h1>
           <p className="mt-2 leading-6 text-slate-400">
             {error ? error.message : 'Yayina alinmis ve koordinati dogrulanmis haber bulunamadi.'}
@@ -54,8 +54,8 @@ function HomePage() {
       <main className="grid h-dvh w-screen place-items-center bg-slate-950 text-slate-300">
         <div className="flex flex-col items-center gap-5">
           <span className="relative grid h-16 w-16 place-items-center">
-            <span className="absolute inset-0 animate-ping border border-cyan-300/40" />
-            <span className="absolute inset-2 border border-cyan-300/25" />
+            <span className="absolute inset-0 animate-ping rounded-full border border-cyan-300/40" />
+            <span className="absolute inset-2 rounded-full border border-cyan-300/25" />
             <Radio className="animate-pulse text-cyan-200" size={22} />
           </span>
           <div className="text-center">
@@ -87,7 +87,7 @@ function HomePage() {
 
       <MapModeControl activeModeId={mapModeId} onModeChange={setMapModeId} />
 
-      <section className="pointer-events-none absolute right-4 top-4 z-[510] hidden w-[310px] border border-white/10 bg-slate-950/75 p-4 shadow-2xl shadow-black/25 backdrop-blur-xl xl:block">
+      <section className="pointer-events-none absolute right-4 top-4 z-[510] hidden w-[310px] rounded-2xl border border-white/10 bg-slate-950/70 p-4 shadow-2xl shadow-black/40 ring-1 ring-white/5 backdrop-blur-xl xl:block">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
@@ -96,7 +96,7 @@ function HomePage() {
             </p>
             <h2 className="mt-2 text-lg font-semibold text-white">Türkiye yayın kapsamı</h2>
           </div>
-          <span className="inline-flex items-center gap-1.5 border border-emerald-300/30 bg-emerald-300/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-100">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-100">
             <Radio size={12} className="animate-pulse" />
             Aktif
           </span>
@@ -109,14 +109,14 @@ function HomePage() {
           <InfoPill icon={<Crosshair size={15} />} label="Yakınlık" value="Bölgesel" />
           <InfoPill icon={<Layers size={15} />} label="Katman" value={selectedMapMode.label} />
         </div>
-        <div className="mt-3 border border-cyan-300/20 bg-cyan-300/10 px-3 py-2">
+        <div className="mt-3 rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2">
           <span className="flex items-center gap-1 text-[11px] font-semibold uppercase text-cyan-100">
             <Clock3 size={15} />
             Son guncelleme
           </span>
           <p className="mt-1 text-sm font-semibold text-white">{operationsSummary.latestLabel}</p>
         </div>
-        <div className="mt-3 border border-white/10 bg-white/[0.045] px-3 py-2">
+        <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.045] px-3 py-2">
           <span className="flex items-center gap-1 text-[11px] font-semibold uppercase text-slate-400">
             <DatabaseZap size={15} />
             Veri modu
@@ -131,12 +131,12 @@ function HomePage() {
 
 function InfoPill({ icon, label, value }) {
   return (
-    <div className="border border-white/10 bg-white/[0.06] px-3 py-2">
+    <div className="rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
       <span className="flex items-center gap-1 text-[11px] font-semibold uppercase text-slate-400">
         {icon}
         {label}
       </span>
-      <p className="mt-1 font-semibold text-white">{value}</p>
+      <p className="mt-1 truncate font-semibold text-white">{value}</p>
     </div>
   )
 }

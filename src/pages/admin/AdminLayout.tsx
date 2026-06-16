@@ -61,7 +61,7 @@ function AdminLayout() {
               return (
                 <NavLink
                   className={({ isActive }) =>
-                    `flex items-center justify-between gap-3 border px-4 py-3 text-sm font-semibold transition ${
+                    `flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-sm font-semibold transition ${
                       isActive
                         ? 'border-cyan-300/60 bg-cyan-300/10 text-white'
                         : 'border-white/10 bg-white/[0.035] text-slate-300 hover:border-white/25 hover:bg-white/[0.07]'
@@ -75,7 +75,7 @@ function AdminLayout() {
                     {item.label}
                   </span>
                   {item.badge ? (
-                    <span className="min-w-6 border border-amber-300/40 bg-amber-300/12 px-2 py-0.5 text-center text-xs font-bold text-amber-100">
+                    <span className="min-w-6 rounded-full border border-amber-300/40 bg-amber-300/12 px-2 py-0.5 text-center text-xs font-bold text-amber-100">
                       {badgeValue}
                     </span>
                   ) : null}
@@ -94,14 +94,14 @@ function AdminLayout() {
               <h2 className="mt-1 text-2xl font-semibold text-white">Haber Yönetimi</h2>
             </div>
             <a
-              className="border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/16"
+              className="rounded-xl border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/16"
               href="/"
             >
               Haritayı Aç
             </a>
             {isBackendEnabled() ? (
               <button
-                className="inline-flex items-center gap-2 border border-rose-300/30 bg-rose-300/10 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-300/16"
+                className="inline-flex items-center gap-2 rounded-xl border border-rose-300/30 bg-rose-300/10 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-300/16"
                 onClick={handleLogout}
                 type="button"
               >

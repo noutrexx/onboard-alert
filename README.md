@@ -11,10 +11,13 @@ Location-aware crisis and live news monitoring platform for Turkey. Onboard Aler
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-111827?style=for-the-badge&logo=express&logoColor=white)
 
-![Onboard Alert full map](docs/screenshots/home-map-full.png)
+<p align="center">
+  <img src="docs/preview/hero.png" alt="Onboard Alert — live news map interface" width="100%" />
+</p>
 
 ## Highlights
 
+- Modern, rounded glassmorphism UI with clean, non-overlapping map controls.
 - Full-screen Turkey map with clustered alert markers and multiple tile modes.
 - Collapsible live news feed with source cards, severity filters, keyboard shortcuts, and alert focus.
 - Source-domain badges on feed cards so operators can scan provenance quickly.
@@ -58,19 +61,21 @@ flowchart LR
     end
 ```
 
-## Screenshots
+## Interface
 
-### Live Map
+### Live Map & News Feed
 
-![Live map](docs/screenshots/map.png)
+A full-screen dark map with a collapsible, rounded glassmorphism news feed, a top-right
+situation panel, and a bottom-right map-mode switcher that stays clear of the zoom controls.
 
-### News Feed
+![Onboard Alert live map and news feed](docs/preview/hero.png)
 
-![News sidebar](docs/screenshots/sidebar.png)
+### Admin Dashboard
 
-### Admin Panel
+Editorial dashboard for managing records, with rounded navigation, status/category pills,
+and inline edit/delete actions.
 
-![Admin dashboard](docs/screenshots/admin.png)
+![Onboard Alert admin dashboard](docs/preview/admin.png)
 
 ## Project Structure
 
@@ -85,7 +90,8 @@ onboard-alert/
 ├─ backend/                # Express + PostgreSQL API
 │  ├─ database/migrations/ # SQL schema migrations
 │  └─ src/                 # Controllers, routes, services, repositories
-├─ docs/screenshots/       # README screenshots
+├─ docs/preview/           # README interface previews (SVG sources + PNGs)
+├─ docs/screenshots/       # Additional README screenshots
 └─ public/                 # Static icons
 ```
 

@@ -95,15 +95,15 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
     <>
       {!isOpen ? (
         <button
-          className="fixed left-3 top-4 z-[620] inline-flex items-center gap-2 border border-cyan-300/35 bg-slate-950/75 px-3 py-3 text-sm font-bold text-cyan-100 shadow-2xl shadow-black/40 backdrop-blur-xl transition hover:bg-slate-950/90 md:top-1/2 md:-translate-y-1/2"
+          className="fixed left-3 top-4 z-[620] inline-flex items-center gap-2 rounded-full border border-cyan-300/35 bg-gradient-to-r from-slate-950/85 to-cyan-950/60 px-4 py-3 text-sm font-bold text-cyan-100 shadow-2xl shadow-black/40 ring-1 ring-white/5 backdrop-blur-xl transition hover:to-cyan-900/60 md:top-1/2 md:-translate-y-1/2"
           onClick={openPanel}
           type="button"
         >
           <span className="relative">
             {hasUnread ? (
               <>
-                <span className="absolute -right-1 -top-1 h-2.5 w-2.5 animate-ping bg-red-400" />
-                <span className="absolute -right-1 -top-1 h-2.5 w-2.5 bg-red-500" />
+                <span className="absolute -right-1 -top-1 h-2.5 w-2.5 animate-ping rounded-full bg-red-400" />
+                <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-red-500" />
               </>
             ) : null}
             <Menu size={18} />
@@ -115,15 +115,15 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
 
       <motion.aside
         animate={{ x: isOpen ? 0 : '-104%' }}
-        className="fixed inset-y-0 left-0 z-[610] flex h-dvh w-full flex-col overflow-hidden border-r border-white/10 bg-slate-950/75 text-white shadow-2xl shadow-black/50 backdrop-blur-xl md:w-96"
+        className="fixed inset-y-0 left-0 z-[610] flex h-dvh w-full flex-col overflow-hidden border-r border-white/10 bg-slate-950/75 text-white shadow-2xl shadow-black/50 backdrop-blur-xl md:w-96 md:rounded-r-3xl"
         initial={false}
         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
       >
-        <header className="border-b border-white/10 p-4">
+        <header className="border-b border-white/10 bg-gradient-to-b from-cyan-300/[0.07] to-transparent p-4">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200">
-                <Radio size={15} className="animate-pulse" />
+              <p className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200">
+                <Radio size={13} className="animate-pulse" />
                 Live News Map
               </p>
               <h1 className="mt-2 text-xl font-semibold tracking-normal text-white">
@@ -131,7 +131,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
               </h1>
             </div>
             <button
-              className="border border-white/10 bg-white/[0.045] p-2 text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
+              className="rounded-xl border border-white/10 bg-white/[0.045] p-2 text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
               onClick={closePanel}
               type="button"
             >
@@ -158,7 +158,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
 
               return (
                 <button
-                  className={`border px-2.5 py-1 text-[11px] font-bold transition ${
+                  className={`rounded-full border px-3 py-1 text-[11px] font-bold transition ${
                     isActive
                       ? 'border-cyan-300/60 bg-cyan-300/14 text-cyan-100'
                       : 'border-white/10 bg-white/[0.035] text-slate-300 hover:border-cyan-200/35 hover:text-white'
@@ -172,11 +172,11 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
               )
             })}
           </div>
-          <div className="mt-3 flex items-center justify-between gap-3 border border-white/10 bg-white/[0.045] px-3 py-2">
+          <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.045] px-3 py-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
               Veri Modu
             </span>
-            <span className="border border-amber-300/35 bg-amber-300/10 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-amber-100">
+            <span className="rounded-full border border-amber-300/35 bg-amber-300/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-amber-100">
               {dataMode.label}
             </span>
           </div>
@@ -184,14 +184,14 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
 
         <div className="news-scrollbar min-h-0 flex-1 space-y-2.5 overflow-y-auto p-3">
           {hiddenAlertCount > 0 ? (
-            <div className="border border-amber-300/25 bg-amber-300/10 p-3 text-xs font-semibold leading-5 text-amber-100">
+            <div className="rounded-xl border border-amber-300/25 bg-amber-300/10 p-3 text-xs font-semibold leading-5 text-amber-100">
               Performans koruması aktif: ilk {FEED_RENDER_LIMIT} haber gösteriliyor.
               {hiddenAlertCount} kayıt haritada cluster olarak duruyor.
             </div>
           ) : null}
 
           {filteredAlerts.length === 0 ? (
-            <div className="border border-white/10 bg-white/[0.045] p-4 text-sm leading-6 text-slate-300">
+            <div className="rounded-xl border border-white/10 bg-white/[0.045] p-4 text-sm leading-6 text-slate-300">
               Bu risk seviyesinde yayinlanmis haber yok.
             </div>
           ) : null}
@@ -207,9 +207,9 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
             return (
               <motion.article
                 animate={{ opacity: 1, y: 0 }}
-                className={`group relative w-full border p-3.5 text-left transition ${
+                className={`group relative w-full rounded-2xl border p-3.5 text-left transition ${
                   isSelected
-                    ? 'border-cyan-300/70 bg-cyan-300/12 shadow-lg shadow-cyan-950/40'
+                    ? 'border-cyan-300/70 bg-gradient-to-br from-cyan-300/15 to-cyan-300/[0.04] shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-300/20'
                     : 'border-white/10 bg-white/[0.045] hover:border-cyan-200/35 hover:bg-white/[0.08]'
                 }`}
                 initial={reduceMotion ? false : { opacity: 0, y: 12 }}
@@ -229,12 +229,12 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
                 </button>
 
                 <span
-                  className={`absolute right-3 top-3 h-2.5 w-2.5 shadow-lg ${getSeverityTone(alert.severity)}`}
+                  className={`absolute right-3 top-3 h-2.5 w-2.5 rounded-full shadow-lg ${getSeverityTone(alert.severity)}`}
                 />
 
                 <div className="relative z-10 flex items-start justify-between gap-6">
                   <span
-                    className={`inline-flex items-center gap-1.5 border px-2 py-1 text-[11px] font-bold ${category.accentClass}`}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-bold ${category.accentClass}`}
                   >
                     <CategoryIcon size={13} />
                     {category.label}
@@ -263,7 +263,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
                     ) : null}
                   </div>
                   {sourceHost ? (
-                    <span className="shrink-0 border border-white/10 bg-white/[0.045] px-2 py-1 text-[11px] font-semibold text-slate-300">
+                    <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.045] px-2.5 py-1 text-[11px] font-semibold text-slate-300">
                       {sourceHost}
                     </span>
                   ) : null}
@@ -283,7 +283,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
 
 function StatusMetric({ icon, label, value }) {
   return (
-    <div className="border border-white/10 bg-white/[0.045] px-3 py-2">
+    <div className="rounded-xl border border-white/10 bg-white/[0.045] px-3 py-2">
       <div className="flex items-center justify-center gap-1 text-lg font-semibold text-white">
         {icon}
         {value}
