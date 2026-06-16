@@ -16,7 +16,13 @@ export function createApp() {
   app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 
   app.get('/health', (_request, response) => {
-    response.json({ ok: true, service: 'onboard-alert-api' })
+    response.json({
+      environment: env.NODE_ENV,
+      ok: true,
+      service: 'onboard-alert-api',
+      timestamp: new Date().toISOString(),
+      uptimeSeconds: Math.round(process.uptime()),
+    })
   })
 
   app.use('/api/admin/auth', adminAuthRouter)
