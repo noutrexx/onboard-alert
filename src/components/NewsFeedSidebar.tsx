@@ -24,6 +24,7 @@ import {
   getDisplayLocation,
   getSeverityTone,
   getSourceUrl,
+  severityLabel,
 } from '../utils/formatters'
 
 const categoryIcons = {
@@ -35,6 +36,7 @@ const categoryIcons = {
 }
 
 const FEED_RENDER_LIMIT = 250
+const severityFilters = ['all', 'critical', 'high', 'medium', 'green']
 
 function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
   const reduceMotion = useReducedMotion()
@@ -42,9 +44,14 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
     typeof window === 'undefined' ? true : window.innerWidth >= 768,
   )
   const [hasUnread, setHasUnread] = useState(false)
+  const [severityFilter, setSeverityFilter] = useState('all')
   const previousCountRef = useRef(alerts.length)
-  const visibleAlerts = alerts.slice(0, FEED_RENDER_LIMIT)
-  const hiddenAlertCount = Math.max(alerts.length - visibleAlerts.length, 0)
+  const filteredAlerts =
+    severityFilter === 'all'
+      ? alerts
+      : alerts.filter((alert) => alert.severity === severityFilter)
+  const visibleAlerts = filteredAlerts.slice(0, FEED_RENDER_LIMIT)
+  const hiddenAlertCount = Math.max(filteredAlerts.length - visibleAlerts.length, 0)
   const categoryCount = new Set(alerts.map((alert) => alert.category)).size
   const locationCount = new Set(alerts.map(getDisplayLocation).filter(Boolean)).size
 
@@ -140,6 +147,30 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
           <p className="mt-3 text-[11px] font-medium text-slate-400">
             Kısayol: M aç/kapat, Esc kapat
           </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {severityFilters.map((severity) => {
+              const isActive = severityFilter === severity
+              const count =
+                severity === 'all'
+                  ? alerts.length
+                  : alerts.filter((alert) => alert.severity === severity).length
+
+              return (
+                <button
+                  className={`border px-2.5 py-1 text-[11px] font-bold transition ${
+                    isActive
+                      ? 'border-cyan-300/60 bg-cyan-300/14 text-cyan-100'
+                      : 'border-white/10 bg-white/[0.035] text-slate-300 hover:border-cyan-200/35 hover:text-white'
+                  }`}
+                  key={severity}
+                  onClick={() => setSeverityFilter(severity)}
+                  type="button"
+                >
+                  {severity === 'all' ? 'Tum' : severityLabel(severity)} {count}
+                </button>
+              )
+            })}
+          </div>
           <div className="mt-3 flex items-center justify-between gap-3 border border-white/10 bg-white/[0.045] px-3 py-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
               Veri Modu
@@ -155,6 +186,12 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
             <div className="border border-amber-300/25 bg-amber-300/10 p-3 text-xs font-semibold leading-5 text-amber-100">
               Performans koruması aktif: ilk {FEED_RENDER_LIMIT} haber gösteriliyor.
               {hiddenAlertCount} kayıt haritada cluster olarak duruyor.
+            </div>
+          ) : null}
+
+          {filteredAlerts.length === 0 ? (
+            <div className="border border-white/10 bg-white/[0.045] p-4 text-sm leading-6 text-slate-300">
+              Bu risk seviyesinde yayinlanmis haber yok.
             </div>
           ) : null}
 
