@@ -28,40 +28,56 @@
       <stop offset="0" stop-color="#fcd34d" stop-opacity="0.5"/>
       <stop offset="100%" stop-color="#fcd34d" stop-opacity="0"/>
     </radialGradient>
+    <radialGradient id="mGreen" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#34d399" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="land" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15273f"/>
+      <stop offset="1" stop-color="#0a1526"/>
+    </linearGradient>
   </defs>
 
   <!-- map base -->
   <rect width="1600" height="680" fill="#020617"/>
 
-  <!-- abstract landmass / graticule -->
-  <g opacity="0.5">
-    <path d="M620 250 C720 200 880 210 1010 250 C1170 300 1300 290 1380 350 C1430 390 1380 470 1250 500 C1080 540 880 520 760 470 C660 430 560 420 560 360 C560 310 580 280 620 250 Z" fill="#0c1626"/>
-    <path d="M700 300 C800 280 940 300 1040 340 L1010 420 C900 440 800 430 740 400 Z" fill="#0f1a2e"/>
-  </g>
-  <g stroke="#1e293b" stroke-width="1" opacity="0.35">
-    <line x1="400" y1="120" x2="1600" y2="120"/>
-    <line x1="400" y1="260" x2="1600" y2="260"/>
-    <line x1="400" y1="400" x2="1600" y2="400"/>
-    <line x1="400" y1="540" x2="1600" y2="540"/>
-    <line x1="560" y1="0" x2="560" y2="680"/>
-    <line x1="760" y1="0" x2="760" y2="680"/>
-    <line x1="960" y1="0" x2="960" y2="680"/>
-    <line x1="1160" y1="0" x2="1160" y2="680"/>
-    <line x1="1360" y1="0" x2="1360" y2="680"/>
+  <!-- faint graticule -->
+  <g stroke="#16243a" stroke-width="1" opacity="0.55">
+    <line x1="400" y1="170" x2="1600" y2="170"/>
+    <line x1="400" y1="300" x2="1600" y2="300"/>
+    <line x1="400" y1="430" x2="1600" y2="430"/>
+    <line x1="560" y1="40" x2="560" y2="660"/>
+    <line x1="760" y1="40" x2="760" y2="660"/>
+    <line x1="960" y1="40" x2="960" y2="660"/>
+    <line x1="1160" y1="40" x2="1160" y2="660"/>
+    <line x1="1360" y1="40" x2="1360" y2="660"/>
   </g>
 
-  <!-- markers -->
-  <g>
-    <circle cx="820" cy="300" r="34" fill="url(#mCyan)"/>
-    <circle cx="820" cy="300" r="9" fill="#67e8f9" stroke="#ffffff" stroke-width="2"/>
-    <circle cx="1060" cy="250" r="30" fill="url(#mRed)"/>
-    <circle cx="1060" cy="250" r="8" fill="#f87171" stroke="#ffffff" stroke-width="2"/>
-    <circle cx="980" cy="420" r="30" fill="url(#mAmber)"/>
-    <circle cx="980" cy="420" r="8" fill="#fcd34d" stroke="#ffffff" stroke-width="2"/>
-    <circle cx="1230" cy="370" r="28" fill="url(#mCyan)"/>
-    <circle cx="1230" cy="370" r="8" fill="#34d399" stroke="#ffffff" stroke-width="2"/>
-    <circle cx="700" cy="430" r="26" fill="url(#mRed)"/>
-    <circle cx="700" cy="430" r="7" fill="#f87171" stroke="#ffffff" stroke-width="2"/>
+  <!-- Türkiye silhouette -->
+  <path d="M736 263 L1009 230 L1146 256 L1282 248 L1305 248 L1396 303 L1455 314 L1428 380 L1350 406 L1236 421 L1100 424 L1064 450 L1073 428 L964 421 L873 435 L805 439 L759 428 L691 424 L655 413 L645 362 L609 366 L632 322 L609 303 L632 289 L668 281 L714 267 Z"
+        fill="url(#land)" stroke="#67e8f9" stroke-opacity="0.4" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- city markers -->
+  <g font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+    <circle cx="745" cy="268" r="30" fill="url(#mCyan)"/>
+    <circle cx="745" cy="268" r="8" fill="#67e8f9" stroke="#ffffff" stroke-width="2"/>
+    <text x="759" y="272" fill="#e2e8f0" font-size="13" font-weight="600">İstanbul</text>
+
+    <circle cx="911" cy="306" r="30" fill="url(#mRed)"/>
+    <circle cx="911" cy="306" r="8" fill="#f87171" stroke="#ffffff" stroke-width="2"/>
+    <text x="925" y="310" fill="#e2e8f0" font-size="13" font-weight="600">Ankara</text>
+
+    <circle cx="650" cy="360" r="28" fill="url(#mAmber)"/>
+    <circle cx="650" cy="360" r="8" fill="#fcd34d" stroke="#ffffff" stroke-width="2"/>
+    <text x="624" y="392" fill="#e2e8f0" font-size="13" font-weight="600">İzmir</text>
+
+    <circle cx="814" cy="417" r="28" fill="url(#mGreen)"/>
+    <circle cx="814" cy="417" r="8" fill="#34d399" stroke="#ffffff" stroke-width="2"/>
+    <text x="788" y="449" fill="#e2e8f0" font-size="13" font-weight="600">Antalya</text>
+
+    <circle cx="1246" cy="380" r="28" fill="url(#mRed)"/>
+    <circle cx="1246" cy="380" r="8" fill="#f87171" stroke="#ffffff" stroke-width="2"/>
+    <text x="1260" y="384" fill="#e2e8f0" font-size="13" font-weight="600">Diyarbakır</text>
   </g>
 
   <rect width="1600" height="680" fill="url(#vign)"/>
