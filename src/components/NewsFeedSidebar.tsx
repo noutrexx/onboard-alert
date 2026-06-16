@@ -23,6 +23,7 @@ import {
   getAlertTimestamp,
   getDisplayLocation,
   getSeverityTone,
+  getSourceHost,
   getSourceUrl,
   severityLabel,
 } from '../utils/formatters'
@@ -201,6 +202,7 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
             const CategoryIcon = categoryIcons[alert.category] ?? Tag
             const displayLocation = getDisplayLocation(alert)
             const sourceUrl = getSourceUrl(alert)
+            const sourceHost = getSourceHost(sourceUrl)
 
             return (
               <motion.article
@@ -252,14 +254,19 @@ function NewsFeedSidebar({ alerts, dataMode, selectedAlert, onSelectAlert }) {
                 </p>
 
                 <div className="relative z-10 mt-4 flex items-center justify-between gap-3">
-                  {displayLocation ? (
-                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-                      <MapPin size={13} />
-                      {displayLocation}
-                    </div>
-                  ) : (
-                    <span />
-                  )}
+                  <div className="flex min-w-0 items-center gap-2 text-xs font-semibold text-slate-400">
+                    {displayLocation ? (
+                      <>
+                        <MapPin size={13} />
+                        <span className="truncate">{displayLocation}</span>
+                      </>
+                    ) : null}
+                  </div>
+                  {sourceHost ? (
+                    <span className="shrink-0 border border-white/10 bg-white/[0.045] px-2 py-1 text-[11px] font-semibold text-slate-300">
+                      {sourceHost}
+                    </span>
+                  ) : null}
                 </div>
 
                 <div className="relative z-20">
