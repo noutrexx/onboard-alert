@@ -16,7 +16,8 @@ Location-aware crisis and live news monitoring platform for Turkey. Onboard Aler
 ## Highlights
 
 - Full-screen Turkey map with clustered alert markers and multiple tile modes.
-- Collapsible live news feed with source cards, keyboard shortcuts, and alert focus.
+- Collapsible live news feed with source cards, severity filters, keyboard shortcuts, and alert focus.
+- Operations summary panel with live alert totals, elevated-risk count, and latest update time.
 - Admin panel for manual alert creation, editing, deletion, and pending-location triage.
 - Local demo mode for zero-backend previews.
 - Backend mode with Express, PostgreSQL, HttpOnly cookie-protected admin routes, and bot ingest endpoint.
@@ -188,6 +189,7 @@ http://localhost:4000
 
 | Method | Route | Auth | Purpose |
 | --- | --- | --- | --- |
+| `GET` | `/health` | Public | Service health, environment, uptime, and timestamp. |
 | `GET` | `/api/alerts` | Public | Published map alerts. |
 | `POST` | `/api/admin/auth/login` | Admin password | Create a secure admin session. |
 | `GET` | `/api/admin/auth/session` | Admin session | Validate the admin session. |
