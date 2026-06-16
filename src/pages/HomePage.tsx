@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
-import { Activity, Crosshair, DatabaseZap, Layers, LocateFixed, Radio, Tag } from 'lucide-react'
+import { Activity, AlertTriangle, Clock3, Crosshair, DatabaseZap, Layers, LocateFixed, Radio, Tag } from 'lucide-react'
 import LiveMap from '../components/LiveMap'
 import MapModeControl from '../components/MapModeControl'
 import NewsFeedSidebar from '../components/NewsFeedSidebar'
 import { useAlerts } from '../context/useAlerts'
 import { getCategoryMeta } from '../data/categories'
 import { defaultMapModeId, getMapMode } from '../data/mapModes'
-import { getDisplayLocation } from '../utils/formatters'
+import { formatRelativeTime, getAlertTimestamp, getDisplayLocation } from '../utils/formatters'
 
 function HomePage() {
   const { activeAlerts, dataMode, error, isLoading } = useAlerts()
@@ -18,6 +18,23 @@ function HomePage() {
   const selectedCategory = selectedAlert ? getCategoryMeta(selectedAlert.category) : null
   const selectedLocation = selectedAlert ? getDisplayLocation(selectedAlert) : ''
   const selectedMapMode = getMapMode(mapModeId)
+  const operationsSummary = useMemo(() => {
+    const elevatedAlertCount = activeAlerts.filter((alert) =>
+      ['critical', 'high', 'red'].includes(alert.severity),
+    ).length
+    const latestTimestamp = activeAlerts
+      .map(getAlertTimestamp)
+      .filter(Boolean)
+      .map((timestamp) => new Date(timestamp).getTime())
+      .filter((timestamp) => !Number.isNaN(timestamp))
+      .sort((a, b) => b - a)[0]
+
+    return {
+      elevatedAlertCount,
+      latestLabel: latestTimestamp ? formatRelativeTime(new Date(latestTimestamp).toISOString()) : 'Bekleniyor',
+      totalAlertCount: activeAlerts.length,
+    }
+  }, [activeAlerts])
 
   if (!isLoading && (error || activeAlerts.length === 0)) {
     return (
@@ -85,10 +102,19 @@ function HomePage() {
           </span>
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
+          <InfoPill icon={<Activity size={15} />} label="Yayin" value={operationsSummary.totalAlertCount} />
+          <InfoPill icon={<AlertTriangle size={15} />} label="Risk" value={operationsSummary.elevatedAlertCount} />
           <InfoPill icon={<LocateFixed size={15} />} label="Odak" value={selectedLocation || 'Türkiye geneli'} />
           <InfoPill icon={<Tag size={15} />} label="Kategori" value={selectedCategory?.label ?? 'Tümü'} />
           <InfoPill icon={<Crosshair size={15} />} label="Yakınlık" value="Bölgesel" />
           <InfoPill icon={<Layers size={15} />} label="Katman" value={selectedMapMode.label} />
+        </div>
+        <div className="mt-3 border border-cyan-300/20 bg-cyan-300/10 px-3 py-2">
+          <span className="flex items-center gap-1 text-[11px] font-semibold uppercase text-cyan-100">
+            <Clock3 size={15} />
+            Son guncelleme
+          </span>
+          <p className="mt-1 text-sm font-semibold text-white">{operationsSummary.latestLabel}</p>
         </div>
         <div className="mt-3 border border-white/10 bg-white/[0.045] px-3 py-2">
           <span className="flex items-center gap-1 text-[11px] font-semibold uppercase text-slate-400">
