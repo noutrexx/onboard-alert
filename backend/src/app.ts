@@ -16,6 +16,7 @@ export function createApp() {
   app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 
   app.get('/health', (_request, response) => {
+    response.set('Cache-Control', 'no-store')
     response.json({
       environment: env.NODE_ENV,
       ok: true,
